@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.CourseMapper">
+    <resultMap id="BaseResultMap" type="com.pojo.Course">
+        <id column="courseNum" property="courseNum" jdbcType="INTEGER"/>
+        <result column="courseName" property="courseName" jdbcType="VARCHAR"/>
+        <result column="teacherName" property="teacherName" jdbcType="VARCHAR"/>
+        <result column="startWeek" property="startWeek" jdbcType="INTEGER"/>
+        <result column="endWeek" property="endWeek" jdbcType="INTEGER"/>
+        <result column="courseWeek" property="courseWeek" jdbcType="VARCHAR"/>
+        <result column="courseTime" property="courseTime" jdbcType="TIME"/>
+        <result column="courseAddress" property="courseAddress" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        courseNum
+        , courseName, teacherName, startWeek, endWeek, courseWeek, courseTime, courseAddress
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from course
+        where courseNum = #{courseNum,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from course
+        where courseNum = #{courseNum,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.pojo.Course">
+        insert into
+            course (courseNum, courseName, teacherName,
+                    startWeek, endWeek, courseWeek,
+                    courseTime, courseAddress)
+        values (#{courseNum,jdbcType=INTEGER}, #{courseName,jdbcType=VARCHAR}, #{teacherName,jdbcType=VARCHAR},
+                #{startWeek,jdbcType=INTEGER}, #{endWeek,jdbcType=INTEGER}, #{courseWeek,jdbcType=VARCHAR},
+                #{courseTime,jdbcType=TIMESTAMP}, #{courseAddress,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.pojo.Course">
+        insert into course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseNum != null">
+                courseNum,
+            </if>
+            <if test="courseName != null">
+                courseName,
+            </if>
+            <if test="teacherName != null">
+                teacherName,
+            </if>
+            <if test="startWeek != null">
+                startWeek,
+            </if>
+            <if test="endWeek != null">
+                endWeek,
+            </if>
+            <if test="courseWeek != null">
+                courseWeek,
+            </if>
+            <if test="courseTime != null">
+                courseTime,
+            </if>
+            <if test="courseAddress != null">
+                courseAddress,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseNum != null">
+                #{courseNum,jdbcType=INTEGER},
+            </if>
+            <if test="courseName != null">
+                #{courseName,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherName != null">
+                #{teacherName,jdbcType=VARCHAR},
+            </if>
+            <if test="startWeek != null">
+                #{startWeek,jdbcType=INTEGER},
+            </if>
+            <if test="endWeek != null">
+                #{endWeek,jdbcType=INTEGER},
+            </if>
+            <if test="courseWeek != null">
+                #{courseWeek,jdbcType=VARCHAR},
+            </if>
+            <if test="courseTime != null">
+                #{courseTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="courseAddress != null">
+                #{courseAddress,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.pojo.Course">
+        update course
+        <set>
+            <if test="courseName != null">
+                courseName = #{courseName,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherName != null">
+                teacherName = #{teacherName,jdbcType=VARCHAR},
+            </if>
+            <if test="startWeek != null">
+                startWeek = #{startWeek,jdbcType=INTEGER},
+            </if>
+            <if test="endWeek != null">
+                endWeek = #{endWeek,jdbcType=INTEGER},
+            </if>
+            <if test="courseWeek != null">
+                courseWeek = #{courseWeek,jdbcType=VARCHAR},
+            </if>
+            <if test="courseTime != null">
+                courseTime = #{courseTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="courseAddress != null">
+                courseAddress = #{courseAddress,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where courseNum = #{courseNum,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.pojo.Course">
+        update course
+        set courseName    = #{courseName,jdbcType=VARCHAR},
+            teacherName   = #{teacherName,jdbcType=VARCHAR},
+            startWeek     = #{startWeek,jdbcType=INTEGER},
+            endWeek       = #{endWeek,jdbcType=INTEGER},
+            courseWeek    = #{courseWeek,jdbcType=VARCHAR},
+            courseTime    = #{courseTime,jdbcType=TIMESTAMP},
+            courseAddress = #{courseAddress,jdbcType=VARCHAR}
+        where courseNum = #{courseNum,jdbcType=INTEGER}
+    </update>
+
+    <select id="queryCourseInfoAll" parameterType="com.pojo.Course" resultType="com.pojo.Course">
+        SELECT * FROM course
+        <where>
+            <if test="courseName!=null and courseName!=''">
+                and courseName like '%${courseName}%'
+            </if>
+            <if test="teacherName!=null and teacherName!=''">
+                and teacherName like '%${teacherName}%'
+            </if>
+        </where>
+    </select>
+
+
+    <!-- EasyExcel -->
+    <!-- 批量查询数据 -->
+    <select id="queryCourseByCourseNum" resultMap="BaseResultMap">
+        SELECT * FROM course
+        <where>
+            courseNum IN
+            <foreach collection="array" item="courseNum" open="(" close=")" separator=",">
+                #{courseNum}
+            </foreach>
+        </where>
+    </select>
+
+    <!-- 批量插入数据 -->
+    <insert id="save">
+        insert into
+        course (courseNum, courseName, teacherName,
+        startWeek, endWeek, courseWeek,
+        courseTime, courseAddress)
+        values
+        <foreach collection="list" item="course" separator=",">
+            (#{courseNum,jdbcType=INTEGER}, #{courseName,jdbcType=VARCHAR}, #{teacherName,jdbcType=VARCHAR},
+            #{startWeek,jdbcType=INTEGER}, #{endWeek,jdbcType=INTEGER}, #{courseWeek,jdbcType=VARCHAR},
+            #{courseTime,jdbcType=TIMESTAMP}, #{courseAddress,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <!-- EasyExcel -->
+
+</mapper>

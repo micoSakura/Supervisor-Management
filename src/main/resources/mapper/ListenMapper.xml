@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.ListenMapper">
+    <resultMap id="BaseResultMap" type="com.pojo.Listen">
+        <id column="listenNum" property="listenNum" jdbcType="INTEGER"/>
+        <result column="supNum" property="supNum" jdbcType="INTEGER"/>
+        <result column="courseNum" property="courseNum" jdbcType="INTEGER"/>
+        <result column="verifyState" property="verifyState" jdbcType="VARCHAR"/>
+        <result column="listenState" property="listenState" jdbcType="VARCHAR"/>
+        <collection property="supervisorList" ofType="com.pojo.Supervisor">
+            <id column="supNum" property="supNum" jdbcType="INTEGER"/>
+            <result column="supName" property="supName" jdbcType="VARCHAR"/>
+            <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        </collection>
+        <collection property="courseList" ofType="com.pojo.Course">
+            <id column="courseNum" property="courseNum" jdbcType="INTEGER"/>
+            <result column="courseName" property="courseName" jdbcType="VARCHAR"/>
+            <result column="teacherName" property="teacherName" jdbcType="VARCHAR"/>
+            <result column="courseWeek" property="courseWeek" jdbcType="VARCHAR"/>
+            <result column="courseTime" property="courseTime" jdbcType="VARCHAR"/>
+            <result column="courseAddress" property="courseAddress" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        listenNum
+        , supNum, courseNum, verifyState, listenState
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select *
+        from listen
+                 INNER JOIN supervisor ON listen.supNum = supervisor.supNum
+                 INNER JOIN course ON listen.courseNum = course.courseNum
+        where listenNum = #{listenNum,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from listen
+        where listenNum = #{listenNum,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.pojo.Listen">
+        insert into
+            listen (listenNum, supNum, courseNum,
+                    verifyState, listenState)
+        values (#{listenNum,jdbcType=INTEGER}, #{supNum,jdbcType=INTEGER}, #{courseNum,jdbcType=INTEGER},
+                #{verifyState,jdbcType=VARCHAR}, #{listenState,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.pojo.Listen">
+        insert into listen
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="listenNum != null">
+                listenNum,
+            </if>
+            <if test="supNum != null">
+                supNum,
+            </if>
+            <if test="courseNum != null">
+                courseNum,
+            </if>
+            <if test="verifyState != null">
+                verifyState,
+            </if>
+            <if test="listenState != null">
+                listenState,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="listenNum != null">
+                #{listenNum,jdbcType=INTEGER},
+            </if>
+            <if test="supNum != null">
+                #{supNum,jdbcType=INTEGER},
+            </if>
+            <if test="courseNum != null">
+                #{courseNum,jdbcType=INTEGER},
+            </if>
+            <if test="verifyState != null">
+                #{verifyState,jdbcType=VARCHAR},
+            </if>
+            <if test="listenState != null">
+                #{listenState,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.pojo.Listen">
+        update listen
+        <set>
+            <if test="supNum != null">
+                supNum = #{supNum,jdbcType=INTEGER},
+            </if>
+            <if test="courseNum != null">
+                courseNum = #{courseNum,jdbcType=INTEGER},
+            </if>
+            <if test="verifyState != null">
+                verifyState = #{verifyState,jdbcType=VARCHAR},
+            </if>
+            <if test="listenState != null">
+                listenState = #{listenState,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where listenNum = #{listenNum,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.pojo.Listen">
+        update listen
+        set supNum      = #{supNum,jdbcType=INTEGER},
+            courseNum   = #{courseNum,jdbcType=INTEGER},
+            verifyState = #{verifyState,jdbcType=VARCHAR},
+            listenState = #{listenState,jdbcType=VARCHAR}
+        where listenNum = #{listenNum,jdbcType=INTEGER}
+    </update>
+
+    <select id="queryListenInfoAll" resultMap="BaseResultMap">
+        SELECT * FROM listen
+        INNER JOIN supervisor ON listen.supNum = supervisor.supNum
+        INNER JOIN course ON listen.courseNum = course.courseNum
+        <where>
+            <if test="courseName!=null and courseName!=''">
+                and courseName like '%${courseName}%'
+            </if>
+            <if test="teacherName!=null and teacherName!=''">
+                and teacherName like '%${teacherName}%'
+            </if>
+            <if test="supName!=null and supName!=''">
+                and supName like '%${supName}%'
+            </if>
+            <if test="phone!=null and phone!=''">
+                and phone like '%${phone}%'
+            </if>
+            <if test="verifyState!=null and verifyState!='' and verifyState==0">
+                and verifyState like '%0%'
+            </if>
+            <if test="verifyState!=null and verifyState!='' and verifyState==1">
+                and verifyState like '%1%'
+            </if>
+            <if test="verifyState!=null and verifyState!='' and verifyState==2">
+                and verifyState like '%2%'
+            </if>
+            <if test="listenState!=null and listenState!='' and listenState==0">
+                and listenState like '%0%'
+            </if>
+            <if test="listenState!=null and listenState!='' and listenState==1">
+                and listenState like '%1%'
+            </if>
+            <if test="verifyState!=null and verifyState!='' and listenState!=null and listenState!='' and listenState==2">
+                and listenState not like '%0%' and listenState not like '%1%'
+            </if>
+            <if test="verifyState=='' and listenState!=null and listenState!='' and listenState==0">
+                and listenState like '%0%' and verifyState like '%0%'
+            </if>
+            <if test="verifyState=='' and listenState==2">
+                and listenState not like '%0%' and listenState not like '%1%'
+                or listenState like '%0%' and verifyState not like '%0%'
+            </if>
+            <if test="supNum!=null and supNum!=''">
+                and listen.supNum like '${supNum}'
+            </if>
+        </where>
+    </select>
+
+    <update id="updateSuccess" parameterType="com.pojo.Listen">
+        update listen
+        set verifyState = 0
+        where listenNum = #{listenNum,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateFail" parameterType="com.pojo.Listen">
+        update listen
+        set verifyState = 1
+        where listenNum = #{listenNum,jdbcType=INTEGER}
+    </update>
+
+    <!-- 前台数据库的对应方法 -->
+    <update id="updateDone" parameterType="com.pojo.Listen">
+        update listen
+        set listenState = 0
+        where listenNum = #{listenNum,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateUndone" parameterType="com.pojo.Listen">
+        update listen
+        set listenState = 1
+        where listenNum = #{listenNum,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteListenBySupNumAndCourseNum" parameterType="com.pojo.Listen">
+        DELETE
+        FROM listen
+        where listen.supNum = #{supNum}
+          AND listen.courseNum = #{courseNum}
+    </delete>
+
+    <select id="queryListenAllWithSame" resultType="com.pojo.Listen" parameterType="com.pojo.Listen">
+        SELECT *
+        FROM listen
+                 INNER JOIN course ON listen.courseNum = course.courseNum
+                 INNER JOIN supervisor ON listen.supNum = supervisor.supNum
+        where listen.supNum = #{supNum}
+          AND listen.courseNum = #{courseNum}
+    </select>
+
+    <update id="updateListenView" parameterType="com.pojo.Listen">
+        update listen, supervisor
+        set verifyState = #{verifyState,jdbcType=VARCHAR}, listenState = #{listenState,jdbcType=VARCHAR}, supervisor.supName = #{supName,jdbcType=VARCHAR}, supervisor.phone = #{phone,jdbcType=VARCHAR}
+        where listenNum = #{listenNum,jdbcType=INTEGER}
+          and supervisor.supNum = #{supNum,jdbcType=INTEGER}
+    </update>
+</mapper>

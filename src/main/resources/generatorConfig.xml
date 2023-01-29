@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!-- 根节点,Mybatis逆向工程配置 -->
+<generatorConfiguration>
+    <!--  子元素  -->
+    <classPathEntry location="C:\Users\mimico\.m2\repository\mysql\mysql-connector-java\8.0.30\mysql-connector-java-8.0.30.jar"/>
+    <context id="MysqlTables" defaultModelType="flat" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver" userId="root" password="123456"
+                        connectionURL="jdbc:mysql://localhost:3306/mimico?nullCatalogMeansCurrent=true"/>
+
+        <javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl"/>
+
+        <!-- 生成pojo类和数据库表一一对应 -->
+        <javaModelGenerator targetPackage="com.pojo" targetProject="..\Supervisor-Management\src\main\java">
+            <property name="enableSubPackages" value="true"/>
+            <!-- 从数据库返回的值被清理前后的空格  -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!--映射xml文件及dao接口-->
+        <sqlMapGenerator targetPackage="mapper" targetProject="..\Supervisor-Management\src\main\resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator  targetPackage="com.mapper" type="XMLMAPPER" targetProject="..\Supervisor-Management\src\main\java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--数据库表-->
+        <table tableName="admin" domainObjectName="Admin"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+        <table tableName="supervisor" domainObjectName="Supervisor"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+        <table tableName="course" domainObjectName="Course"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+        <table tableName="listen" domainObjectName="Listen"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+        <table tableName="record" domainObjectName="Record"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+    </context>
+</generatorConfiguration>

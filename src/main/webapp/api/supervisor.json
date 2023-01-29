@@ -1,0 +1,81 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "page/welcome-1.html?t=1"
+  },
+  "logoInfo": {
+    "title": "mimico",
+    "image": "images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "用户",
+          "href": "",
+          "icon": "fa fa-home",
+          "target": "_self",
+          "child": [
+            {
+              "title": "个人信息",
+              "href": "supervisorInfo",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "修改信息",
+              "href": "supervisorUpdate",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "听课选择",
+          "href": "",
+          "icon": "fa fa-window-maximize",
+          "target": "_self",
+          "child": [
+            {
+              "title": "课程报名",
+              "href": "courseView",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "已选课程",
+              "href": "listenView",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "课程评教",
+          "href": "",
+          "icon": "fa fa-gears",
+          "target": "_self",
+          "child": [
+            {
+              "title": "评教",
+              "href": "listenEvaluation",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "评教记录",
+              "href": "recordView",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

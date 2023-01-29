@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.RecordMapper">
+    <resultMap id="BaseResultMap" type="com.pojo.Record">
+        <id column="recordNum" property="recordNum" jdbcType="INTEGER"/>
+        <result column="listenNum" property="listenNum" jdbcType="INTEGER"/>
+        <result column="selection" property="selection" jdbcType="INTEGER"/>
+        <result column="attendance" property="attendance" jdbcType="INTEGER"/>
+        <result column="evaluation" property="evaluation" jdbcType="REAL"/>
+        <result column="suggestion" property="suggestion" jdbcType="VARCHAR"/>
+        <result column="courseContent" property="courseContent" jdbcType="VARCHAR"/>
+        <collection property="listenList" ofType="com.pojo.Listen">
+            <id column="listenNum" property="listenNum" jdbcType="INTEGER"/>
+            <result column="supNum" property="supNum" jdbcType="INTEGER"/>
+            <result column="courseNum" property="courseNum" jdbcType="INTEGER"/>
+            <result column="verifyState" property="verifyState" jdbcType="VARCHAR"/>
+            <result column="listenState" property="listenState" jdbcType="VARCHAR"/>
+            <collection property="supervisorList" ofType="com.pojo.Supervisor">
+                <id column="supNum" property="supNum" jdbcType="INTEGER"/>
+                <result column="supName" property="supName" jdbcType="VARCHAR"/>
+                <result column="phone" property="phone" jdbcType="VARCHAR"/>
+            </collection>
+            <collection property="courseList" ofType="com.pojo.Course">
+                <id column="courseNum" property="courseNum" jdbcType="INTEGER"/>
+                <result column="courseName" property="courseName" jdbcType="VARCHAR"/>
+                <result column="teacherName" property="teacherName" jdbcType="VARCHAR"/>
+                <result column="courseTime" property="courseTime" jdbcType="VARCHAR"/>
+                <result column="courseAddress" property="courseAddress" jdbcType="VARCHAR"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        recordNum
+        , listenNum, selection, attendance, evaluation, suggestion, courseContent
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from record
+        where recordNum = #{recordNum,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from record
+        where recordNum = #{recordNum,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.pojo.Record">
+        insert into record (recordNum, listenNum, selection,
+                            attendance, evaluation, suggestion,
+                            courseContent)
+        values (#{recordNum,jdbcType=INTEGER}, #{listenNum,jdbcType=INTEGER}, #{selection,jdbcType=INTEGER},
+                #{attendance,jdbcType=INTEGER}, #{evaluation,jdbcType=REAL}, #{suggestion,jdbcType=VARCHAR},
+                #{courseContent,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.pojo.Record">
+        insert into record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recordNum != null">
+                recordNum,
+            </if>
+            <if test="listenNum != null">
+                listenNum,
+            </if>
+            <if test="selection != null">
+                selection,
+            </if>
+            <if test="attendance != null">
+                attendance,
+            </if>
+            <if test="evaluation != null">
+                evaluation,
+            </if>
+            <if test="suggestion != null">
+                suggestion,
+            </if>
+            <if test="courseContent != null">
+                courseContent,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="recordNum != null">
+                #{recordNum,jdbcType=INTEGER},
+            </if>
+            <if test="listenNum != null">
+                #{listenNum,jdbcType=INTEGER},
+            </if>
+            <if test="selection != null">
+                #{selection,jdbcType=INTEGER},
+            </if>
+            <if test="attendance != null">
+                #{attendance,jdbcType=INTEGER},
+            </if>
+            <if test="evaluation != null">
+                #{evaluation,jdbcType=REAL},
+            </if>
+            <if test="suggestion != null">
+                #{suggestion,jdbcType=VARCHAR},
+            </if>
+            <if test="courseContent != null">
+                #{courseContent,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.pojo.Record">
+        update record
+        <set>
+            <if test="listenNum != null">
+                listenNum = #{listenNum,jdbcType=INTEGER},
+            </if>
+            <if test="selection != null">
+                selection = #{selection,jdbcType=INTEGER},
+            </if>
+            <if test="attendance != null">
+                attendance = #{attendance,jdbcType=INTEGER},
+            </if>
+            <if test="evaluation != null">
+                evaluation = #{evaluation,jdbcType=REAL},
+            </if>
+            <if test="suggestion != null">
+                suggestion = #{suggestion,jdbcType=VARCHAR},
+            </if>
+            <if test="courseContent != null">
+                courseContent = #{coursecontent,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where recordNum = #{recordNum,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.pojo.Record">
+        update record
+        set listenNum     = #{listenNum,jdbcType=INTEGER},
+            selection     = #{selection,jdbcType=INTEGER},
+            attendance    = #{attendance,jdbcType=INTEGER},
+            evaluation    = #{evaluation,jdbcType=REAL},
+            suggestion    = #{suggestion,jdbcType=VARCHAR},
+            courseContent = #{courseContent,jdbcType=VARCHAR}
+        where recordNum = #{recordNum,jdbcType=INTEGER}
+    </update>
+
+    <select id="queryRecordInfoAll" resultMap="BaseResultMap">
+        SELECT * FROM
+        record
+        INNER JOIN listen ON record.listenNum = listen.listenNum
+        INNER JOIN course ON listen.courseNum = course.courseNum
+        INNER JOIN supervisor ON listen.supNum = supervisor.supNum
+        <where>
+            <if test="courseName!=null and courseName!=''">
+                and courseName like '%${courseName}%'
+            </if>
+            <if test="teacherName!=null and teacherName!=''">
+                and teacherName like '%${teacherName}%'
+            </if>
+            <if test="supName!=null and supName!=''">
+                and supName like '%${supName}%'
+            </if>
+            <if test="phone!=null and phone!=''">
+                and phone like '%${phone}%'
+            </if>
+            <if test="supNum!=null and supNum!=''">
+                and supervisor.supNum like '${supNum}'
+            </if>
+        </where>
+    </select>
+
+    <select id="queryRecordAllWithSame" resultType="com.pojo.Record" parameterType="com.pojo.Record">
+        SELECT *
+        FROM record
+                 INNER JOIN listen ON record.listenNum = listen.listenNum
+                 INNER JOIN course ON listen.courseNum = course.courseNum
+                 INNER JOIN supervisor ON listen.supNum = supervisor.supNum
+            AND listen.supNum = #{supNum} AND listen.listenNum = #{listenNum}
+    </select>
+
+</mapper>
