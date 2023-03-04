@@ -61,8 +61,9 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
-                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add">添加</button>
+                <button class="layui-btn layui-btn-sm layui-btn-primary layui-border-black" lay-event="export">
+                    评教记录导出
+                </button>
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete">删除</button>
             </div>
         </script>
@@ -115,8 +116,8 @@
                 {field: 'selection', width: 100, title: '选课人数'},
                 {field: 'attendance', width: 100, title: '出勤人数'},
                 {field: 'evaluation', width: 100, title: '督导评分'},
-                {field: 'suggestion', width: 200, title: '督导意见'},
                 {field: 'courseContent', width: 200, title: '授课内容'},
+                {field: 'suggestion', width: 200, title: '督导意见'},
                 {fixed: 'right', title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
@@ -146,6 +147,13 @@
          * toolbar监听事件
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
+            let checkStatus = table.checkStatus('currentTableId')
+                , data = checkStatus.data;
+            let recordNum = [];
+            for (let i = 0; i < data.length; i++) {
+                recordNum += data[i].recordNum + ",";
+            }
+            console.log(recordNum);
             if (obj.event === 'add') {  // 监听添加操作
                 layer.open({
                     title: '',
@@ -157,13 +165,6 @@
                     content: '${pageContext.request.contextPath}/recordAdd',
                 });
             } else if (obj.event === 'delete') {  // 监听删除操作
-                let checkStatus = table.checkStatus('currentTableId')
-                    , data = checkStatus.data;
-                let recordNum = [];
-                for (let i = 0; i < data.length; i++) {
-                    recordNum += data[i].recordNum + ",";
-                }
-                console.log(recordNum);
                 if (checkStatus.data.length === 0) {
                     layer.msg('请选择需要删除的数据');
                 } else {
@@ -174,10 +175,8 @@
                             }
                         });
                 }
-            } else if (obj.event === 'getCheckData') {
-                let checkStatus = table.checkStatus('currentTableId')
-                    , data = checkStatus.data;
-                layer.alert(layui.util.escape(JSON.stringify(data)));
+            } else if (obj.event === 'export') {
+                location.href = "downloadByRecordList?recordNum=" + recordNum;
             }
         });
 

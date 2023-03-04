@@ -69,18 +69,20 @@
                    placeholder="课堂评分" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
+    <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">授课内容</label>
         <div class="layui-input-block">
-            <input type="text" name="suggestion" lay-verify="required" lay-reqtext="授课内容不能为空"
-                   placeholder="授课内容" class="layui-input">
+            <label>
+                <textarea placeholder="请输入内容" class="layui-textarea" name="courseContent"></textarea>
+            </label>
         </div>
     </div>
-    <div class="layui-form-item">
+    <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">意见</label>
         <div class="layui-input-block">
-            <input type="text" name="courseContent" lay-verify="required" lay-reqtext="意见不能为空"
-                   placeholder="请输入上课地点" class="layui-input">
+            <label>
+                <textarea placeholder="请输入意见" class="layui-textarea" name="suggestion"></textarea>
+            </label>
         </div>
     </div>
 
@@ -122,7 +124,7 @@
                             parent.layer.close(iframeIndex);
                         })
                     } else {
-                        layer.msg("添加失败");
+                        layer.msg("评教失败");
                     }
                 }
             })

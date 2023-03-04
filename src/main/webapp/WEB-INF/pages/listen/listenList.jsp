@@ -53,9 +53,9 @@
                             <div class="layui-input-inline">
                                 <select class="layui-input" name="verifyState" id="verifyState">
                                     <option value=""></option>
-                                    <option value="0">通过</option>
-                                    <option value="1">不通过</option>
-                                    <option value="2">待审核</option>
+                                    <option value="0">待审核</option>
+                                    <option value="1">通过</option>
+                                    <option value="2">不通过</option>
                                 </select>
                             </div>
                         </div>
@@ -64,9 +64,10 @@
                             <div class="layui-input-inline">
                                 <select class="layui-input" name="listenState" id="listenState">
                                     <option value=""></option>
-                                    <option value="0">已听课</option>
-                                    <option value="1">未听课</option>
-                                    <option value="2">状态异常</option>
+                                    <option value="0">待听课</option>
+                                    <option value="1">已听课</option>
+                                    <option value="2">未听课</option>
+                                    <option value="3">已评教</option>
                                 </select>
                             </div>
                         </div>
@@ -82,8 +83,7 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
-                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add">添加</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add">选课安排</button>
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete">删除</button>
                 <button class="layui-btn layui-btn-sm layui-btn-warm data-delete-btn" lay-event="edit">更新</button>
             </div>
@@ -92,14 +92,14 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
-            {{# if(d.listenState=='1'){ }}
+            {{# if(d.verifyState=='0'){ }}
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="success">通过</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="fail">不通过</a>
             {{# } }}
-            {{# if((d.listenState=='0' && d.verifyState!='0') || (d.listenState!='0' && d.listenState!='1')){ }}
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">修改</a>
+            {{# if((d.listenState=='1' && d.verifyState=='2') || (d.listenState>='4')){ }}
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
             {{# } }}
-            {{# if(d.listenState!='0' || d.verifyState!='0'){ }}
+            {{# if(d.listenState!='1' || d.listenState!='3' || d.verifyState!='1'){ }}
             <a class="layui-btn layui-btn-xs layui-btn-warm data-count-delete" lay-event="delete">取消报名</a>
             {{# } }}
         </script>
@@ -154,22 +154,25 @@
                 {
                     field: 'verifyState', width: 100, title: '审核状态', align: "center", templet: function (res) {
                         if (res.verifyState === "0") {
-                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal">通过</span>'
-                        } else if (res.verifyState === "1") {
-                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">不通过</span>'
-                        } else {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-warm">待审核</span>'
+                        } else if (res.verifyState === "1") {
+                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal">通过</span>'
+                        } else if (res.verifyState === "2") {
+                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">不通过</span>'
                         }
                     }
                 },
                 {
                     field: 'listenState', width: 100, title: '听课状态', align: "center", templet: function (res) {
-                        if (res.listenState === "0" && res.verifyState === "0") {
+                        if (res.listenState === "0" && ((res.verifyState === "0") || (res.verifyState === "1"))) {
+                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal">待听课</span>'
+                        } else if (res.listenState === "1" && res.verifyState === "1") {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal">已听课</span>'
-                        } else if (res.listenState === "1") {
+                        } else if (res.listenState === "2" && res.verifyState === "1") {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">未听课</span>'
-                        } else if ((res.listenState === "0" && res.verifyState !== "0")
-                            || (res.listenState !== "0" && res.listenState !== "1")) {
+                        } else if (res.listenState === "3" && res.verifyState === "1") {
+                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">已评教</span>'
+                        } else {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-warm">状态异常</span>'
                         }
                     }

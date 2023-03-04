@@ -2,7 +2,6 @@ package com.service;
 
 import com.github.pagehelper.PageInfo;
 import com.pojo.Record;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,4 +18,6 @@ public interface RecordService {
     void deleteRecordByRecordNum(List<String> recordNums);
 
     List<Record> queryRecordAllWithSame(Integer supNum, List<String> listenNums);
+
+    List<Record> queryRecordByRecordNums(Integer[] recordNum);
 }

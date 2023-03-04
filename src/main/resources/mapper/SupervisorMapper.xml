@@ -26,9 +26,10 @@
         where supNum = #{supNum,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.pojo.Supervisor">
-        insert into supervisor (supNum, supName, loginName,
-                                password, sex, title,
-                                phone)
+        insert into
+            supervisor (supNum, supName, loginName,
+                        password, sex, title,
+                        phone)
         values (#{supNum,jdbcType=INTEGER}, #{supName,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR},
                 #{password,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
                 #{phone,jdbcType=VARCHAR})

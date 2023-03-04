@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="../../../lib/layui-v2.6.3/css/layui.css" media="all">
     <link rel="stylesheet" href="../../../css/public.css" media="all">
     <style>
-        .layui-form-item .layui-input-company {width: auto;padding-right: 10px;line-height: 38px;}
+        .layui-form-item .layui-input-company {
+            width: auto;
+            padding-right: 10px;
+            line-height: 38px;
+        }
     </style>
 </head>
 <body>
@@ -24,50 +28,50 @@
                 <label class="layui-form-label required">督导姓名</label>
                 <div class="layui-input-block">
                     <input type="text" name="supName" lay-verify="required" lay-reqtext="督导姓名不能为空"
-                           placeholder="请输入督导姓名" value="${info.supName}" class="layui-input">
+                           placeholder="请输入督导姓名" value="${info.supName}" class="layui-input layui-disabled">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label required">登录名</label>
                 <div class="layui-input-block">
                     <input type="text" name="loginName" lay-verify="required" lay-reqtext="登录名不能为空"
-                           placeholder="请输入登录名" value="${info.loginName}" class="layui-input">
+                           placeholder="请输入登录名" value="${info.loginName}" class="layui-input layui-disabled">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label required">密码</label>
                 <div class="layui-input-block">
                     <input type="text" name="password" lay-verify="required" lay-reqtext="密码不能为空"
-                           placeholder="请输入密码" value="${info.password}" class="layui-input">
+                           placeholder="请输入密码" value="${info.password}" class="layui-input layui-disabled">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">性别</label>
-                <div class="layui-input-block">
-                    <select name="sex">
-                        <option value="${info.sex}">${info.sex}</option>
-                        <option value="男">男</option>
-                        <option value="女">女</option>
-                    </select>
+                <div class="layui-input-block layui-disabled">
+                    <input type="text" name="password" placeholder="请输入密码"
+                           value="${info.sex}" class="layui-input layui-disabled">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label required">手机</label>
                 <div class="layui-input-block">
                     <input type="text" name="phone" lay-reqtext="手机不能为空" placeholder="请输入手机"
-                           value="${info.phone}" class="layui-input">
+                           value="${info.phone}" class="layui-input layui-disabled">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">职业</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" placeholder="请输入职业" value="${info.title}" class="layui-input">
+                    <input type="text" name="title" placeholder="请输入职业" value="${info.title}"
+                           class="layui-input layui-disabled">
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">
+                        更新个人信息
+                    </button>
                 </div>
             </div>
         </div>
@@ -76,20 +80,21 @@
 <script src="../../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script src="../../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script>
-    layui.use(['form','miniTab'], function () {
+    layui.use(['form'], function () {
         let form = layui.form,
-            layer = layui.layer,
-            miniTab = layui.miniTab;
+            layer = layui.layer;
 
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-            let index = layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            }, function () {
-                layer.close(index);
-                miniTab.deleteCurrentByIframe();
+            layer.open({
+                title: '编辑督导',
+                type: 2,
+                shade: 0.2,
+                maxmin: true,
+                shadeClose: true,
+                area: ['80%', '80%'],
+                content: '${pageContext.request.contextPath}/querySupervisorBySupNum?supNum=' + ${info.supNum},
             });
-            return false;
         });
     });
 </script>

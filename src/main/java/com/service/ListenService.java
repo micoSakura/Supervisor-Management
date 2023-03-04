@@ -30,4 +30,6 @@ public interface ListenService {
     void updateDone(List<String> listenNum);
 
     void updateUndone(Integer listenNum);
+
+    List<Listen> queryListenByListenNums(Integer[] listenNum);
 }

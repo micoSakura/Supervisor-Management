@@ -1,7 +1,6 @@
 package com.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.pojo.Admin;
 import com.pojo.Supervisor;
 import com.service.SupervisorService;
 import com.utils.DataInfo;
@@ -70,10 +69,14 @@ public class SupervisorController {
         return DataInfo.ok();
     }
 
+    /**
+     * 前台功能
+     */
     @GetMapping("/supervisorInfo")
     public String supervisorInfo(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession();
         Supervisor supervisor = (Supervisor) session.getAttribute("supervisor");
+        System.out.println("你获取的supervisor是: " + supervisor);
         String loginName = supervisor.getLoginName();
         String password = supervisor.getPassword();
         Supervisor supervisorInfo = supervisorService.querySupervisorByLoginNameAndPassword(loginName, password);

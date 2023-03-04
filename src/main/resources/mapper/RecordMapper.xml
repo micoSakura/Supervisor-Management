@@ -18,12 +18,19 @@
             <collection property="supervisorList" ofType="com.pojo.Supervisor">
                 <id column="supNum" property="supNum" jdbcType="INTEGER"/>
                 <result column="supName" property="supName" jdbcType="VARCHAR"/>
+                <result column="loginName" property="loginName" jdbcType="VARCHAR"/>
+                <result column="password" property="password" jdbcType="VARCHAR"/>
+                <result column="sex" property="sex" jdbcType="VARCHAR"/>
+                <result column="title" property="title" jdbcType="VARCHAR"/>
                 <result column="phone" property="phone" jdbcType="VARCHAR"/>
             </collection>
             <collection property="courseList" ofType="com.pojo.Course">
                 <id column="courseNum" property="courseNum" jdbcType="INTEGER"/>
                 <result column="courseName" property="courseName" jdbcType="VARCHAR"/>
                 <result column="teacherName" property="teacherName" jdbcType="VARCHAR"/>
+                <result column="startWeek" property="startWeek" jdbcType="VARCHAR"/>
+                <result column="endWeek" property="endWeek" jdbcType="VARCHAR"/>
+                <result column="courseWeek" property="courseWeek" jdbcType="VARCHAR"/>
                 <result column="courseTime" property="courseTime" jdbcType="VARCHAR"/>
                 <result column="courseAddress" property="courseAddress" jdbcType="VARCHAR"/>
             </collection>
@@ -49,9 +56,10 @@
     </delete>
 
     <insert id="insert" parameterType="com.pojo.Record">
-        insert into record (recordNum, listenNum, selection,
-                            attendance, evaluation, suggestion,
-                            courseContent)
+        insert into
+            record (recordNum, listenNum, selection,
+                    attendance, evaluation, suggestion,
+                    courseContent)
         values (#{recordNum,jdbcType=INTEGER}, #{listenNum,jdbcType=INTEGER}, #{selection,jdbcType=INTEGER},
                 #{attendance,jdbcType=INTEGER}, #{evaluation,jdbcType=REAL}, #{suggestion,jdbcType=VARCHAR},
                 #{courseContent,jdbcType=VARCHAR})
@@ -146,9 +154,9 @@
     <select id="queryRecordInfoAll" resultMap="BaseResultMap">
         SELECT * FROM
         record
-        INNER JOIN listen ON record.listenNum = listen.listenNum
-        INNER JOIN course ON listen.courseNum = course.courseNum
-        INNER JOIN supervisor ON listen.supNum = supervisor.supNum
+        LEFT JOIN listen ON record.listenNum = listen.listenNum
+        LEFT JOIN course ON listen.courseNum = course.courseNum
+        LEFT JOIN supervisor ON listen.supNum = supervisor.supNum
         <where>
             <if test="courseName!=null and courseName!=''">
                 and courseName like '%${courseName}%'
@@ -171,10 +179,27 @@
     <select id="queryRecordAllWithSame" resultType="com.pojo.Record" parameterType="com.pojo.Record">
         SELECT *
         FROM record
-                 INNER JOIN listen ON record.listenNum = listen.listenNum
-                 INNER JOIN course ON listen.courseNum = course.courseNum
-                 INNER JOIN supervisor ON listen.supNum = supervisor.supNum
-            AND listen.supNum = #{supNum} AND listen.listenNum = #{listenNum}
+        LEFT JOIN listen ON record.listenNum = listen.listenNum
+        LEFT JOIN course ON listen.courseNum = course.courseNum
+        LEFT JOIN supervisor ON listen.supNum = supervisor.supNum
+        <where>
+            AND listen.supNum = #{supNum}
+            AND listen.listenNum = #{listenNum}
+        </where>
+    </select>
+
+    <select id="queryRecordByRecordNums" resultType="com.pojo.Record">
+        SELECT *
+        FROM record
+        LEFT JOIN listen ON record.listenNum = listen.listenNum
+        LEFT JOIN course ON listen.courseNum = course.courseNum
+        LEFT JOIN supervisor ON listen.supNum = supervisor.supNum
+        <where>
+            recordNum IN
+            <foreach collection="array" item="recordNum" open="(" close=")" separator=",">
+                #{recordNum}
+            </foreach>
+        </where>
     </select>
 
 </mapper>

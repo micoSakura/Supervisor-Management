@@ -106,7 +106,6 @@
             });
             return false;
         });
-
     });
 </script>
 </body>

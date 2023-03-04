@@ -49,6 +49,7 @@
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加</button>
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除
                 </button>
+                <button type="button" class="layui-btn" id="upload"><i class="layui-icon"></i>上传文件</button>
             </div>
         </script>
 
@@ -66,7 +67,8 @@
     layui.use(['form', 'table'], function () {
         let $ = layui.jquery,
             form = layui.form,
-            table = layui.table;
+            table = layui.table,
+            upload = layui.upload;
 
         table.render({
             elem: '#currentTableId',
@@ -143,7 +145,7 @@
                             table.reload("currentTableId", {});
                         }
                     });
-            } else if (obj.event === 'export'){
+            } else if (obj.event === 'export') {
 
             }
         });
@@ -173,6 +175,20 @@
                             }
                         });
                 });
+            }
+        });
+
+        upload.render({
+            elem: '#upload'
+            , url: 'upload' //此处配置你自己的上传接口即可
+            , accept: 'file' //普通文件
+            , done: function (res) {
+                layer.msg('上传成功');
+                console.log(res);
+            },
+            fail: function (res) {
+                layer.msg('上传失败');
+                console.log(res);
             }
         });
     });

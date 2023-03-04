@@ -4,8 +4,8 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.read.listener.ReadListener;
 import com.alibaba.excel.util.ListUtils;
 import com.alibaba.fastjson.JSON;
-import com.mapper.CourseMapper;
 import com.pojo.Course;
+import com.service.CourseService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -16,18 +16,17 @@ public class CourseListener implements ReadListener<Course> {
      * 每隔5条存储数据库，实际使用中可以100条，然后清理list ，方便内存回收
      */
     private static final int BATCH_COUNT = 100;
+    private final CourseService courseService;
     /**
      * 缓存的数据
      */
     private List<Course> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
-    private final CourseMapper courseMapper;
-
     /**
      * 如果使用了spring,请使用这个构造方法。每次创建Listener的时候需要把spring管理的类传进来
      */
-    public CourseListener(CourseMapper courseMapper) {
-        this.courseMapper = courseMapper;
+    public CourseListener(CourseService courseService) {
+        this.courseService = courseService;
     }
 
     // 这个每一条数据解析都会来调用
@@ -56,7 +55,7 @@ public class CourseListener implements ReadListener<Course> {
      */
     private void saveData() {
         log.info("{}条数据，开始存储数据库！", cachedDataList.size());
-        courseMapper.save(cachedDataList);
+        courseService.save(cachedDataList);
         log.info("存储数据库成功！");
     }
 }

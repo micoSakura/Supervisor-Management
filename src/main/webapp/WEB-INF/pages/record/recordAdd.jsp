@@ -48,31 +48,35 @@
     <div class="layui-form-item">
         <label class="layui-form-label">选课人数</label>
         <div class="layui-input-block">
-            <input type="text" name="courseAddress" placeholder="请输入上课地点" class="layui-input">
+            <input type="text" name="selection" placeholder="请输入上课地点" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">出勤人数</label>
         <div class="layui-input-block">
-            <input type="text" name="courseAddress" placeholder="请输入上课地点" class="layui-input">
+            <input type="text" name="attendance" placeholder="请输入上课地点" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">课堂评分</label>
         <div class="layui-input-block">
-            <input type="text" name="courseAddress" placeholder="请输入上课地点" class="layui-input">
+            <input type="text" name="evaluation" placeholder="请输入上课地点" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
+    <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">授课内容</label>
         <div class="layui-input-block">
-            <input type="text" name="courseAddress" placeholder="请输入上课地点" class="layui-input">
+            <label>
+                <textarea placeholder="请输入内容" class="layui-textarea" name="courseContent"></textarea>
+            </label>
         </div>
     </div>
-    <div class="layui-form-item">
+    <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">意见</label>
         <div class="layui-input-block">
-            <input type="text" name="courseAddress" placeholder="请输入上课地点" class="layui-input">
+            <label>
+                <textarea placeholder="请输入意见" class="layui-textarea" name="suggestion"></textarea>
+            </label>
         </div>
     </div>
 
@@ -105,7 +109,7 @@
                 data: info,
                 success: function (result) {
                     if (result.code === 0) {//如果成功
-                        layer.msg('添加成功', {
+                        layer.msg('评教成功', {
                             icon: 6,
                             time: 500
                         }, function () {
@@ -114,7 +118,7 @@
                             parent.layer.close(iframeIndex);
                         })
                     } else {
-                        layer.msg("添加失败");
+                        layer.msg("评教失败");
                     }
                 }
             })

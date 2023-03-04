@@ -5,7 +5,8 @@
 <!-- 根节点,Mybatis逆向工程配置 -->
 <generatorConfiguration>
     <!--  子元素  -->
-    <classPathEntry location="C:\Users\mimico\.m2\repository\mysql\mysql-connector-java\8.0.30\mysql-connector-java-8.0.30.jar"/>
+    <classPathEntry
+            location="C:\Users\mimico\.m2\repository\mysql\mysql-connector-java\8.0.30\mysql-connector-java-8.0.30.jar"/>
     <context id="MysqlTables" defaultModelType="flat" targetRuntime="MyBatis3">
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
@@ -20,7 +21,7 @@
         <javaModelGenerator targetPackage="com.pojo" targetProject="..\Supervisor-Management\src\main\java">
             <property name="enableSubPackages" value="true"/>
             <!-- 从数据库返回的值被清理前后的空格  -->
-            <property name="trimStrings" value="true" />
+            <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!--映射xml文件及dao接口-->
@@ -28,7 +29,8 @@
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator  targetPackage="com.mapper" type="XMLMAPPER" targetProject="..\Supervisor-Management\src\main\java">
+        <javaClientGenerator targetPackage="com.mapper" type="XMLMAPPER"
+                             targetProject="..\Supervisor-Management\src\main\java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 

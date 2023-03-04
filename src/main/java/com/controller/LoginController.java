@@ -32,6 +32,11 @@ public class LoginController {
         return "/login";
     }
 
+    @GetMapping("/welcome")
+    public String welcome() {
+        return "/welcome";
+    }
+
     @RequestMapping("/verifyCode")
     public void verifyCode(HttpServletRequest request, HttpServletResponse response) {
         IVerifyCodeGen iVerifyCodeGen = new SimpleCharVerifyCodeGenImpl();

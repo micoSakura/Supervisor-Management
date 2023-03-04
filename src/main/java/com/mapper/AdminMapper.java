@@ -18,9 +18,20 @@ public interface AdminMapper {
 
     int updateByPrimaryKey(Admin record);
 
-    // 管理员查询
+    /**
+     * 查询督导秘书信息
+     *
+     * @param admin
+     * @return admin
+     */
     List<Admin> queryAdminInfoAll(Admin admin);
 
-    // 管理员登录
+    /**
+     * 督导秘书登录
+     *
+     * @param loginName
+     * @param password
+     * @return loginName, password
+     */
     Admin queryAdminByLoginNameAndPassword(@Param("loginName") String loginName, @Param("password") String password);
 }

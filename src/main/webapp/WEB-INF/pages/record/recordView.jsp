@@ -46,8 +46,9 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
-                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add">添加</button>
+                <button class="layui-btn layui-btn-sm layui-btn-primary layui-border-black" lay-event="export">
+                    评教记录导出
+                </button>
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete">删除</button>
             </div>
         </script>
@@ -56,7 +57,6 @@
 
         <script type="text/html" id="currentTableBar">
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
     </div>
@@ -127,24 +127,14 @@
          * toolbar监听事件
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
-            if (obj.event === 'add') {  // 监听添加操作
-                layer.open({
-                    title: '',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin: true,
-                    shadeClose: true,
-                    area: ['80%', '80%'],
-                    content: '${pageContext.request.contextPath}/recordAdd',
-                });
-            } else if (obj.event === 'delete') {  // 监听删除操作
-                let checkStatus = table.checkStatus('currentTableId')
-                    , data = checkStatus.data;
-                let recordNum = [];
-                for (let i = 0; i < data.length; i++) {
-                    recordNum += data[i].recordNum + ",";
-                }
-                console.log(recordNum);
+            let checkStatus = table.checkStatus('currentTableId')
+                , data = checkStatus.data;
+            let recordNum = [];
+            for (let i = 0; i < data.length; i++) {
+                recordNum += data[i].recordNum + ",";
+            }
+            console.log(recordNum);
+            if (obj.event === 'delete') {  // 监听删除操作
                 if (checkStatus.data.length === 0) {
                     layer.msg('请选择需要删除的数据');
                 } else {
@@ -155,16 +145,13 @@
                             }
                         });
                 }
-            } else if (obj.event === 'getCheckData') {
-                let checkStatus = table.checkStatus('currentTableId')
-                    , data = checkStatus.data;
-                layer.alert(layui.util.escape(JSON.stringify(data)));
+            } else if (obj.event === 'export') {
+                location.href = "downloadByRecordView?recordNum=" + recordNum;
             }
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
             let data = obj.data;
-            let recordNum = data.recordNum;
             if (obj.event === 'edit') {
                 layer.open({
                     title: '',
@@ -176,17 +163,6 @@
                     content: '${pageContext.request.contextPath}/queryRecordByRecordNum?recordNum=' + data.recordNum,
                 });
                 return false;
-            } else if (obj.event === 'delete') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
-                    $.post("deleteRecordByRecordNum", {recordNum: recordNum},
-                        function (result) {
-                            if (result.code === 0) {
-                                table.reload("currentTableId", {});
-                            }
-                        });
-                });
             }
         });
     });

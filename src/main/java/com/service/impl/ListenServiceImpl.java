@@ -5,16 +5,17 @@ import com.github.pagehelper.PageInfo;
 import com.mapper.ListenMapper;
 import com.pojo.Listen;
 import com.service.ListenService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ListenServiceImpl implements ListenService {
 
-    @Autowired
+    @Resource
     private ListenMapper listenMapper;
 
     @Override
@@ -101,5 +102,35 @@ public class ListenServiceImpl implements ListenService {
     @Override
     public void updateUndone(Integer listenNum) {
         listenMapper.updateUndone(listenNum);
+    }
+
+    @Override
+    public List<Listen> queryListenByListenNums(Integer[] listenNum) {
+        List<Listen> listenList = listenMapper.queryListenByListenNums(listenNum);
+        for (Listen listen : listenList) {
+            listen.setCourseName(listen.getCourseList().get(0).getCourseName());
+            listen.setTeacherName(listen.getCourseList().get(0).getTeacherName());
+            listen.setSupName(listen.getSupervisorList().get(0).getSupName());
+            listen.setPhone(listen.getSupervisorList().get(0).getPhone());
+            listen.setCourseTime(listen.getCourseList().get(0).getCourseTime());
+            listen.setCourseAddress(listen.getCourseList().get(0).getCourseAddress());
+            if (Objects.equals(listen.getVerifyState(), "0")) {
+                listen.setVerifyState("待审核");
+            } else if (Objects.equals(listen.getVerifyState(), "1")) {
+                listen.setVerifyState("通过");
+            } else if (Objects.equals(listen.getVerifyState(), "2")) {
+                listen.setVerifyState("未通过");
+            }
+            if (Objects.equals(listen.getListenState(), "0")) {
+                listen.setListenState("待听课");
+            } else if (Objects.equals(listen.getListenState(), "1")) {
+                listen.setListenState("已听课");
+            } else if (Objects.equals(listen.getListenState(), "2")) {
+                listen.setListenState("未听课");
+            } else if (Objects.equals(listen.getListenState(), "3")) {
+                listen.setListenState("已评教");
+            }
+        }
+        return listenList;
     }
 }

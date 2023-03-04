@@ -26,8 +26,9 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.pojo.Admin">
-        insert into admin (id, loginName, password,
-                           realName, sex, phone)
+        insert into
+            admin (id, loginName, password,
+                   realName, sex, phone)
         values (#{id,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
                 #{realName,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR})
     </insert>

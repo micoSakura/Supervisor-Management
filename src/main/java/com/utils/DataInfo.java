@@ -30,10 +30,6 @@ public class DataInfo implements Serializable {
         this.count = count;
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
     public static DataInfo ok() {
         return new DataInfo(Constants.OK_CODE, Constants.OK_MSG, null);
     }
@@ -56,6 +52,10 @@ public class DataInfo implements Serializable {
 
     public static DataInfo fail(int errorCode, String msg) {
         return new DataInfo(errorCode, msg, null);
+    }
+
+    public Integer getCode() {
+        return code;
     }
 
     public void setCode(Integer code) {

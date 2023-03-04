@@ -1,10 +1,10 @@
 {
   "homeInfo": {
     "title": "首页",
-    "href": "page/welcome-1.html?t=1"
+    "href": "welcome"
   },
   "logoInfo": {
-    "title": "mimico",
+    "title": "督导秘书",
     "image": "images/logo.png",
     "href": ""
   },

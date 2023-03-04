@@ -35,6 +35,18 @@
                             </div>
                         </div>
                         <div class="layui-inline">
+                            <label class="layui-form-label">听课状态</label>
+                            <div class="layui-input-inline">
+                                <select class="layui-input" name="listenState" id="listenState">
+                                    <option value=""></option>
+                                    <option value="0">待听课</option>
+                                    <option value="1">已听课</option>
+                                    <option value="2">未听课</option>
+                                    <option value="3">已评教</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
                             <button type="submit" class="layui-btn layui-btn-primary" lay-submit
                                     lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
                             </button>
@@ -46,7 +58,6 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
                 <button class="layui-btn layui-btn-sm layui-btn-primary layui-border-black" lay-event="export">
                     已听课程导出
                 </button>
@@ -56,7 +67,9 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
+            {{# if(d.verifyState=='1' && d.listenState=='1'){ }}
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="evaluate">评教</a>
+            {{# } }}
         </script>
     </div>
 </div>
@@ -78,8 +91,7 @@
             }],
             where: {
                 supNum: ${sessionScope.supervisor.supNum},
-                verifyState: '0',
-                listenState: '0'
+                verifyState: '1',
             },
             cols: [[
                 {type: 'checkbox', width: 50},
@@ -105,22 +117,25 @@
                 {
                     field: 'verifyState', width: 100, title: '审核状态', align: "center", templet: function (res) {
                         if (res.verifyState === "0") {
-                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal">通过</span>'
-                        } else if (res.verifyState === "1") {
-                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">不通过</span>'
-                        } else {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-warm">待审核</span>'
+                        } else if (res.verifyState === "1") {
+                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal">通过</span>'
+                        } else if (res.verifyState === "2") {
+                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">不通过</span>'
                         }
                     }
                 },
                 {
                     field: 'listenState', width: 100, title: '听课状态', align: "center", templet: function (res) {
-                        if (res.listenState === "0" && res.verifyState === "0") {
+                        if (res.listenState === "0" && ((res.verifyState === "0") || (res.verifyState === "1"))) {
+                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal">待听课</span>'
+                        } else if (res.listenState === "1" && res.verifyState === "1") {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal">已听课</span>'
-                        } else if (res.listenState === "1") {
+                        } else if (res.listenState === "2" && res.verifyState === "1") {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">未听课</span>'
-                        } else if ((res.listenState === "0" && res.verifyState !== "0")
-                            || (res.listenState !== "0" && res.listenState !== "1")) {
+                        } else if (res.listenState === "3" && res.verifyState === "1") {
+                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">已评教</span>'
+                        } else {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-warm">状态异常</span>'
                         }
                     }
@@ -136,6 +151,7 @@
         form.on('submit(data-search-btn)', function (data) {
             let courseName = $('#courseName').val();
             let teacherName = $('#teacherName').val();
+            let listenState = $('#listenState').val();
             //执行搜索重载
             table.reload('currentTableId', {
                 page: {
@@ -145,8 +161,8 @@
                     supNum: ${sessionScope.supervisor.supNum},
                     courseName: courseName,
                     teacherName: teacherName,
-                    verifyState: '0',
-                    listenState: '0'
+                    verifyState: '1',
+                    listenState: listenState
                 }
             }, 'data');
             return false;
@@ -156,21 +172,14 @@
          * toolbar监听事件
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
+            let checkStatus = table.checkStatus('currentTableId')
+                , data = checkStatus.data;
+            let listenNum = [];
+            for (let i = 0; i < data.length; i++) {
+                listenNum += data[i].listenNum + ",";
+            }
             if (obj.event === 'export') {  // 监听添加操作
-                layer.open({
-                    title: '选课安排',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin: true,
-                    shadeClose: true,
-                    area: ['80%', '80%'],
-                    content: '${pageContext.request.contextPath}/recordAddView?listenNum=',
-                });
-                return false;
-            } else if (obj.event === 'getCheckData') {
-                let checkStatus = table.checkStatus('currentTableId')
-                    , data = checkStatus.data;
-                layer.alert(layui.util.escape(JSON.stringify(data)));
+                location.href = "downloadByListen?listenNum=" + listenNum;
             }
         });
 
@@ -183,7 +192,7 @@
                     function (result) {
                         if (result.code === 0) {
                             layer.open({
-                                title: '选课安排',
+                                title: '课程评教',
                                 type: 2,
                                 shade: 0.2,
                                 maxmin: true,

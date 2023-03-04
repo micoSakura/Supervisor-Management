@@ -49,4 +49,9 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> queryCourseByCourseNum(Integer[] courseNum) {
         return courseMapper.queryCourseByCourseNum(courseNum);
     }
+
+    @Override
+    public void save(List<Course> courseList) {
+        courseMapper.save(courseList);
+    }
 }

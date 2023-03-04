@@ -39,9 +39,9 @@
                             <div class="layui-input-inline">
                                 <select class="layui-input" name="verifyState" id="verifyState">
                                     <option value=""></option>
-                                    <option value="0">通过</option>
-                                    <option value="1">不通过</option>
-                                    <option value="2">待审核</option>
+                                    <option value="0">待审核</option>
+                                    <option value="1">通过</option>
+                                    <option value="2">不通过</option>
                                 </select>
                             </div>
                         </div>
@@ -50,13 +50,13 @@
                             <div class="layui-input-inline">
                                 <select class="layui-input" name="listenState" id="listenState">
                                     <option value=""></option>
-                                    <option value="0">已听课</option>
-                                    <option value="1">未听课</option>
-                                    <option value="2">状态异常</option>
+                                    <option value="0">待听课</option>
+                                    <option value="1">已听课</option>
+                                    <option value="2">未听课</option>
+                                    <option value="3">已评教</option>
                                 </select>
                             </div>
                         </div>
-
                         <div class="layui-inline">
                             <button type="submit" class="layui-btn layui-btn-primary" lay-submit
                                     lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
@@ -82,14 +82,14 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
-            {{# if(d.verifyState=='0'){ }}
+            {{# if(d.verifyState=='1' && d.listenState=='0'){ }}
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="done">完成听课</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="undone">未完成听课</a>
             {{# } }}
-            {{# if((d.listenState=='0' && d.verifyState!='0') || (d.listenState!='0' && d.listenState!='1')){ }}
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="notice">通知秘书</a>
-            {{# } }}
-            {{# if(d.listenState!='0' || d.verifyState!='0'){ }}
+            <%--            {{# if((d.listenState=='0' && d.verifyState!='0') || (d.listenState!='0' && d.listenState!='1')){ }}--%>
+            <%--            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="notice">通知秘书</a>--%>
+            <%--            {{# } }}--%>
+            {{# if((d.listenState!='1' || d.listenState!='3') && d.verifyState!='1'){ }}
             <a class="layui-btn layui-btn-xs layui-btn-warm data-count-delete" lay-event="delete">取消报名</a>
             {{# } }}
         </script>
@@ -139,22 +139,25 @@
                 {
                     field: 'verifyState', width: 100, title: '审核状态', align: "center", templet: function (res) {
                         if (res.verifyState === "0") {
-                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal">通过</span>'
-                        } else if (res.verifyState === "1") {
-                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">不通过</span>'
-                        } else {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-warm">待审核</span>'
+                        } else if (res.verifyState === "1") {
+                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal">通过</span>'
+                        } else if (res.verifyState === "2") {
+                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">不通过</span>'
                         }
                     }
                 },
                 {
                     field: 'listenState', width: 100, title: '听课状态', align: "center", templet: function (res) {
-                        if (res.listenState === "0" && res.verifyState === "0") {
+                        if (res.listenState === "0" && ((res.verifyState === "0") || (res.verifyState === "1"))) {
+                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal">待听课</span>'
+                        } else if (res.listenState === "1" && res.verifyState === "1") {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal">已听课</span>'
-                        } else if (res.listenState === "1") {
+                        } else if (res.listenState === "2" && res.verifyState === "1") {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">未听课</span>'
-                        } else if ((res.listenState === "0" && res.verifyState !== "0")
-                            || (res.listenState !== "0" && res.listenState !== "1")) {
+                        } else if (res.listenState === "3" && res.verifyState === "1") {
+                            return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">已评教</span>'
+                        } else {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-warm">状态异常</span>'
                         }
                     }
@@ -194,23 +197,15 @@
         table.on('toolbar(currentTableFilter)', function (obj) {
             let checkStatus = table.checkStatus('currentTableId')
                 , data = checkStatus.data;
+            let listenNum = [];
+            for (let i = 0; i < data.length; i++) {
+                listenNum += data[i].listenNum + ",";
+            }
             if (obj.event === 'notice') {  // 监听添加操作
-                layer.open({
-                    title: '选课安排',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin: true,
-                    shadeClose: true,
-                    area: ['80%', '80%'],
-                    content: '${pageContext.request.contextPath}/listenAdd',
+                layer.confirm('通知', function (index) {
+                    layer.close(index);
                 });
             } else if (obj.event === 'delete') {  // 监听删除操作
-                let listenNum = [];
-                for (let i = 0; i < data.length; i++) {
-                    listenNum += data[i].listenNum + ",";
-                }
-                console.log(checkStatus);
-                console.log(listenNum);
                 if (checkStatus.data.length === 0) {
                     layer.msg('请选择需要取消报名的课程');
                 } else {
@@ -232,12 +227,15 @@
                         maxmin: true,
                         shadeClose: true,
                         area: ['80%', '80%'],
-                        content: '${pageContext.request.contextPath}/queryListenByListenNumView?listenNum=' + data[0].listenNum,
+                        content: '${pageContext.request.contextPath}/queryListenByListenNumView?listenNum='
+                            + data[0].listenNum,
                     });
                     return false;
                 } else {
                     layer.msg("请勿多选");
                 }
+            } else if (obj.event === 'export') {
+                location.href = "downloadByListen?listenNum=" + listenNum;
             }
         });
 

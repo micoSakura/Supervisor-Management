@@ -18,4 +18,6 @@ public interface CourseService {
     void deleteCourseByCourseNum(List<String> courseNums);
 
     List<Course> queryCourseByCourseNum(Integer[] courseNum);
+
+    void save(List<Course> courseList);
 }

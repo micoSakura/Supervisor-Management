@@ -146,16 +146,7 @@
                 });
                 return false;
             } else if (obj.event === 'export') {  // 监听删除操作
-                // $.get("/download", {courseNum: courseNum},
-                //     function (result) {
-                //         if (result.code === 0) {
-                //             layer.msg('课程数据导出成功');
-                //             table.reload("currentTableId", {});
-                //         } else {
-                //             layer.msg(result.msg);
-                //         }
-                //     });
-                location.href = "download?courseNum=" + courseNum;
+                location.href = "downloadByCourse?courseNum=" + courseNum;
             }
         });
 

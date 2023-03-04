@@ -37,7 +37,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">起始周</label>
         <div class="layui-input-block">
-            <input type="text" name="startWeek" placeholder="请输入起始周" value="${info.startWeek}" class="layui-input">
+            <input type="text" name="startWeek" placeholder="请输入起始周" value="${info.startWeek}"
+                   class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">

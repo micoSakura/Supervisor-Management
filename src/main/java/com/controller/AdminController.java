@@ -48,7 +48,7 @@ public class AdminController {
     @GetMapping("/queryAdminById")
     public String queryAdminById(Integer id, Model model) {
         Admin admin = adminService.queryAdminById(id);
-        model.addAttribute("info", id);
+        model.addAttribute("info", admin);
         return "admin/adminUpdate";
     }
 
@@ -68,7 +68,7 @@ public class AdminController {
     }
 
     @GetMapping("/adminInfo")
-    public String adminInfo(){
+    public String adminInfo() {
         return "admin/adminInfo";
     }
 }

@@ -1,22 +1,20 @@
 package com.controller;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.annotation.format.DateTimeFormat;
 import com.github.pagehelper.PageInfo;
 import com.listener.CourseListener;
-import com.mapper.CourseMapper;
 import com.pojo.Course;
 import com.service.CourseService;
 import com.utils.DataInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletOutputStream;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -25,12 +23,12 @@ import java.util.List;
 @Controller
 public class CourseController {
 
-    @Autowired
+    @Resource
     private CourseService courseService;
 
-    @Autowired
-    private CourseMapper courseMapper;
-
+    /**
+     * 后台功能
+     */
     @GetMapping("/courseList")
     public String courseList() {
         return "course/courseList";
@@ -80,40 +78,36 @@ public class CourseController {
     }
 
     /**
-     * 前台
+     * 前台功能
      */
     @GetMapping("/courseView")
     public String courseView() {
         return "course/courseView";
     }
 
-    /**
-     * 前台
-     */
     @PostMapping("upload")
     @ResponseBody
     public String upload(MultipartFile file) throws IOException {
-        EasyExcel.read(file.getInputStream(), Course.class, new CourseListener(courseMapper)).sheet().doRead();
+        EasyExcel.read(file.getInputStream(), Course.class, new CourseListener(courseService)).sheet().doRead();
         return "success";
     }
 
-    @GetMapping("download")
-    public void download(Integer[] courseNum, HttpServletResponse response) throws IOException {
+    @GetMapping("downloadByCourse")
+    public void downloadByCourse(Integer[] courseNum, HttpServletResponse response) throws IOException {
         if (courseNum.length > 0) {
             //查询要写入的集合对象
             List<Course> courseList = courseService.queryCourseByCourseNum(courseNum);
             System.out.println(courseList);
             //写入Excel
-            System.out.println("系统时间：" + System.currentTimeMillis());
+            System.out.println("系统时间: " + System.currentTimeMillis());
             //获取当前时间
-            String time = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             //以下载的方式写入Excel
-            String fileName = "course-" + time + ".xlsx";
-            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
-            //通过流写入
-            ServletOutputStream outputStream = response.getOutputStream();
-            //注意写入的对象是：outputStream
-            EasyExcel.write(outputStream, Course.class).sheet("课程列表").doWrite(courseList);
+            String fileName = URLEncoder.encode("课程表", "UTF-8").replaceAll("\\+", "%20");
+            response.setHeader("Content-disposition",
+                    "attachment;filename*=utf-8''" + fileName + "-" + time + ".xlsx");
+            //注意写入的对象是：response.getOutputStream()
+            EasyExcel.write(response.getOutputStream(), Course.class).sheet("课程列表").doWrite(courseList);
         }
     }
 }
