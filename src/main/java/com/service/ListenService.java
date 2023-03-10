@@ -11,6 +11,8 @@ public interface ListenService {
 
     List<Listen> queryListenAllWithSame(List<String> supNum, List<String> courseNum);
 
+    List<Listen> queryListenAllWithSames(Integer supNum, Integer courseNum);
+
     void addListen(Listen listen);
 
     Listen queryListenByListenNum(Integer listenNum);
@@ -32,4 +34,10 @@ public interface ListenService {
     void updateUndone(Integer listenNum);
 
     List<Listen> queryListenByListenNums(Integer[] listenNum);
+
+    List<Listen> queryListen();
+
+    List<Listen> queryListenBySupNumWithListenView(Integer supNum);
+
+    List<Listen> queryListenBySupNumWithListenEvaluation(Integer supNum);
 }

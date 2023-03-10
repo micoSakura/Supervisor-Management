@@ -130,7 +130,7 @@
                 },
                 {
                     field: 'courseTime', width: 120, title: '上课时间',
-                    templet: "<div>{{layui.util.toDateString(d.courseList[0].courseTime,'HH:mm:ss')}}</div>"
+                    templet: "<div>{{d.courseList[0].courseTime}}</div>"
                 },
                 {
                     field: 'courseAddress', width: 200, title: '上课地点',
@@ -235,7 +235,7 @@
                     layer.msg("请勿多选");
                 }
             } else if (obj.event === 'export') {
-                location.href = "downloadByListen?listenNum=" + listenNum;
+                location.href = "downloadByListenNumWithListenView?listenNum=" + listenNum;
             }
         });
 

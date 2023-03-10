@@ -1,5 +1,6 @@
 package com.mapper;
 
+import com.pojo.Course;
 import com.pojo.Supervisor;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,4 +35,11 @@ public interface SupervisorMapper {
      * @return loginName, password
      */
     Supervisor querySupervisorByLoginNameAndPassword(@Param("loginName") String loginName, @Param("password") String password);
+
+    /**
+     * 保存课程导入集合到数据库中的方法
+     *
+     * @param courseList
+     */
+    void save(List<Supervisor> supervisorList);
 }

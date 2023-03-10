@@ -19,5 +19,7 @@ public interface CourseService {
 
     List<Course> queryCourseByCourseNum(Integer[] courseNum);
 
+    List<Course> queryCourse();
+
     void save(List<Course> courseList);
 }

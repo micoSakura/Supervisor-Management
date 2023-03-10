@@ -39,9 +39,7 @@
                             <div class="layui-input-inline">
                                 <select class="layui-input" name="listenState" id="listenState">
                                     <option value=""></option>
-                                    <option value="0">待听课</option>
                                     <option value="1">已听课</option>
-                                    <option value="2">未听课</option>
                                     <option value="3">已评教</option>
                                 </select>
                             </div>
@@ -91,7 +89,7 @@
             }],
             where: {
                 supNum: ${sessionScope.supervisor.supNum},
-                verifyState: '1',
+                verifyState: '1'
             },
             cols: [[
                 {type: 'checkbox', width: 50},
@@ -108,7 +106,7 @@
                 },
                 {
                     field: 'courseTime', width: 120, title: '上课时间',
-                    templet: "<div>{{layui.util.toDateString(d.courseList[0].courseTime,'HH:mm:ss')}}</div>"
+                    templet: "<div>{{d.courseList[0].courseTime}}</div>"
                 },
                 {
                     field: 'courseAddress', width: 200, title: '上课地点',
@@ -179,7 +177,7 @@
                 listenNum += data[i].listenNum + ",";
             }
             if (obj.event === 'export') {  // 监听添加操作
-                location.href = "downloadByListen?listenNum=" + listenNum;
+                location.href = "downloadByListenNumWithListenEvaluation?listenNum=" + listenNum;
             }
         });
 

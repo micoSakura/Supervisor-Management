@@ -136,4 +136,19 @@
         where loginName = #{loginName}
           and password = #{password}
     </select>
+
+    <!-- EasyExcel -->
+    <!-- 批量插入数据 -->
+    <insert id="save">
+        insert into
+        supervisor (supNum, supName, loginName,
+        password, sex, title, phone)
+        values
+        <foreach collection="list" item="supervisor" separator=",">
+            (#{supNum,jdbcType=INTEGER}, #{supName,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR},
+            #{password,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+            #{phone,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <!-- EasyExcel -->
 </mapper>

@@ -154,6 +154,10 @@
         </where>
     </select>
 
+    <select id="queryCourse" resultType="com.pojo.Course">
+        SELECT * FROM course
+    </select>
+
     <!-- 批量插入数据 -->
     <insert id="save">
         insert into

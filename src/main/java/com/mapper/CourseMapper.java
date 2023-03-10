@@ -34,6 +34,12 @@ public interface CourseMapper {
     List<Course> queryCourseByCourseNum(Integer[] courseNum);
 
     /**
+     * 通过课程编号查询
+     *
+     */
+    List<Course> queryCourse();
+
+    /**
      * 保存课程导入集合到数据库中的方法
      *
      * @param courseList

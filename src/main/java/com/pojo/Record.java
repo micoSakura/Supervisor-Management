@@ -3,6 +3,9 @@ package com.pojo;
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
+import com.alibaba.excel.annotation.write.style.*;
+import com.alibaba.excel.enums.poi.HorizontalAlignmentEnum;
+import com.alibaba.excel.enums.poi.VerticalAlignmentEnum;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,6 +13,11 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@ColumnWidth(20)
+@ContentFontStyle(fontName = "等线", fontHeightInPoints = 14)
+@ContentRowHeight(90)
+@ContentStyle(horizontalAlignment = HorizontalAlignmentEnum.CENTER, verticalAlignment = VerticalAlignmentEnum.CENTER)
+@HeadStyle(horizontalAlignment = HorizontalAlignmentEnum.CENTER, verticalAlignment = VerticalAlignmentEnum.CENTER)
 public class Record implements Serializable {
     @ExcelIgnore
     private Integer recordNum;

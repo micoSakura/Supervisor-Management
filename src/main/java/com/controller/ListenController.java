@@ -3,6 +3,7 @@ package com.controller;
 import com.alibaba.excel.EasyExcel;
 import com.github.pagehelper.PageInfo;
 import com.pojo.Listen;
+import com.pojo.Supervisor;
 import com.service.ListenService;
 import com.utils.DataInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -22,7 +26,7 @@ import java.util.Objects;
 @Controller
 public class ListenController {
 
-    @Autowired
+    @Resource
     private ListenService listenService;
 
     /**
@@ -189,22 +193,78 @@ public class ListenController {
         return "listen/listenEvaluation";
     }
 
-    @GetMapping("/downloadByListen")
-    public void downloadByListen(Integer[] listenNum, HttpServletResponse response) throws IOException {
+    @GetMapping("/downloadByListenNumWithListenList")
+    public void downloadByListenNumWithListenList(Integer[] listenNum,
+                                                HttpServletResponse response) throws IOException {
+        List<Listen> listenList;
         if (listenNum.length > 0) {
             //查询要写入的集合对象
-            List<Listen> listenList = listenService.queryListenByListenNums(listenNum);
-            System.out.println(listenList);
-            //写入Excel
-            System.out.println("系统时间: " + System.currentTimeMillis());
-            //获取当前时间
-            String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-            //以下载的方式写入Excel
-            String fileName = URLEncoder.encode("已选课程", "UTF-8").replaceAll("\\+", "%20");
-            response.setHeader("Content-disposition",
-                    "attachment;filename*=utf-8''" + fileName + "-" + time + ".xlsx");
-            //注意写入的对象是：outputStream
-            EasyExcel.write(response.getOutputStream(), Listen.class).sheet("听课列表").doWrite(listenList);
+            listenList = listenService.queryListenByListenNums(listenNum);
+        } else {
+            listenList = listenService.queryListen();
         }
+        System.out.println(listenList);
+        //写入Excel
+        System.out.println("系统时间: " + System.currentTimeMillis());
+        //获取当前时间
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        //以下载的方式写入Excel
+        String fileName = URLEncoder.encode("已选课程", "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition",
+                "attachment;filename*=utf-8''" + fileName + "-" + time + ".xlsx");
+        //注意写入的对象是：outputStream
+        EasyExcel.write(response.getOutputStream(), Listen.class).sheet("听课列表").doWrite(listenList);
+    }
+
+    @GetMapping("/downloadByListenNumWithListenView")
+    public void downloadByListenNumWithListView(Integer[] listenNum,
+                                    HttpServletResponse response,
+                                    HttpServletRequest request) throws IOException {
+        List<Listen> listenList;
+        HttpSession session = request.getSession();
+        Supervisor supervisor = (Supervisor) session.getAttribute("supervisor");
+        if (listenNum.length > 0) {
+            //查询要写入的集合对象
+            listenList = listenService.queryListenByListenNums(listenNum);
+        } else {
+            listenList = listenService.queryListenBySupNumWithListenView(supervisor.getSupNum());
+        }
+        System.out.println(listenList);
+        //写入Excel
+        System.out.println("系统时间: " + System.currentTimeMillis());
+        //获取当前时间
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        //以下载的方式写入Excel
+        String fileName = URLEncoder.encode("已选课程", "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition",
+                "attachment;filename*=utf-8''" + fileName + "-" + time + ".xlsx");
+        //注意写入的对象是：outputStream
+        EasyExcel.write(response.getOutputStream(), Listen.class).sheet("听课列表").doWrite(listenList);
+    }
+
+    @GetMapping("/downloadByListenNumWithListenEvaluation")
+    public void downloadByListenNumWithListenEvaluation(Integer[] listenNum,
+                                    HttpServletResponse response,
+                                    HttpServletRequest request) throws IOException {
+        List<Listen> listenList;
+        HttpSession session = request.getSession();
+        Supervisor supervisor = (Supervisor) session.getAttribute("supervisor");
+        if (listenNum.length > 0) {
+            //查询要写入的集合对象
+            listenList = listenService.queryListenByListenNums(listenNum);
+        } else {
+            listenList = listenService.queryListenBySupNumWithListenEvaluation(supervisor.getSupNum());
+        }
+        System.out.println(listenList);
+        //写入Excel
+        System.out.println("系统时间: " + System.currentTimeMillis());
+        //获取当前时间
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        //以下载的方式写入Excel
+        String fileName = URLEncoder.encode("已选课程", "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition",
+                "attachment;filename*=utf-8''" + fileName + "-" + time + ".xlsx");
+        //注意写入的对象是：outputStream
+        EasyExcel.write(response.getOutputStream(), Listen.class).sheet("听课列表").doWrite(listenList);
     }
 }

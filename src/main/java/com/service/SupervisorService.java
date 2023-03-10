@@ -2,6 +2,7 @@ package com.service;
 
 
 import com.github.pagehelper.PageInfo;
+import com.pojo.Course;
 import com.pojo.Supervisor;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface SupervisorService {
     void deleteSupervisorBySupNum(List<String> supNums);
 
     Supervisor querySupervisorByLoginNameAndPassword(String loginName, String password);
+
+    void save(List<Supervisor> supervisorList);
 }

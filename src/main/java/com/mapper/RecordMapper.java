@@ -42,4 +42,18 @@ public interface RecordMapper {
      * @return
      */
     List<Record> queryRecordByRecordNums(Integer[] recordNum);
+
+    /**
+     * 评教记录导出功能
+     *
+     * @param supNum
+     * @return
+     */
+    List<Record> queryRecordBySupNum(@Param("supNum") Integer supNum);
+
+    /**
+     * 评教记录导出功能
+     *
+     */
+    List<Record> queryRecord();
 }

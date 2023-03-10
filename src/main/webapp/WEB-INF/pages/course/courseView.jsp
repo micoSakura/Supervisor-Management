@@ -86,11 +86,9 @@
                 {field: 'startWeek', width: 120, title: '起始周'},
                 {field: 'endWeek', width: 80, title: '结束周'},
                 {field: 'courseWeek', width: 120, title: '上课星期'},
-                {
-                    field: 'courseTime', width: 120, title: '上课时间',
-                    templet: "<div>{{layui.util.toDateString(d.courseTime,'HH:mm:ss')}}</div>"
-                },
+                {field: 'courseTime', width: 120, title: '上课时间'},
                 {field: 'courseAddress', width: 200, title: '上课地点'},
+                {field: 'msg', width: 150, title: '报名状态'},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],

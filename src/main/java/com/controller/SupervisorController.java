@@ -1,6 +1,10 @@
 package com.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.github.pagehelper.PageInfo;
+import com.listener.CourseListener;
+import com.listener.SupervisorListener;
+import com.pojo.Course;
 import com.pojo.Supervisor;
 import com.service.SupervisorService;
 import com.utils.DataInfo;
@@ -8,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,6 +73,13 @@ public class SupervisorController {
         List<String> list = Arrays.asList(supNum.split(","));
         supervisorService.deleteSupervisorBySupNum(list);
         return DataInfo.ok();
+    }
+
+    @PostMapping("supervisorUpload")
+    @ResponseBody
+    public String supervisorUpload(MultipartFile file) throws IOException {
+        EasyExcel.read(file.getInputStream(), Course.class, new SupervisorListener(supervisorService)).sheet().doRead();
+        return "success";
     }
 
     /**

@@ -49,4 +49,9 @@ public class SupervisorServiceImpl implements SupervisorService {
     public Supervisor querySupervisorByLoginNameAndPassword(String loginName, String password) {
         return supervisorMapper.querySupervisorByLoginNameAndPassword(loginName, password);
     }
+
+    @Override
+    public void save(List<Supervisor> supervisorList) {
+        supervisorMapper.save(supervisorList);
+    }
 }

@@ -20,4 +20,8 @@ public interface RecordService {
     List<Record> queryRecordAllWithSame(Integer supNum, List<String> listenNums);
 
     List<Record> queryRecordByRecordNums(Integer[] recordNum);
+
+    List<Record> queryRecordBySupNum(Integer supNum);
+
+    List<Record> queryRecord();
 }

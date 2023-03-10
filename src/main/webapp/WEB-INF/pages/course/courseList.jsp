@@ -49,7 +49,8 @@
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加</button>
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除
                 </button>
-                <button type="button" class="layui-btn" id="upload"><i class="layui-icon"></i>上传文件</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-primary layui-border-black" id="upload">
+                    <i class="layui-icon"></i>课程信息导入</button>
             </div>
         </script>
 
@@ -87,10 +88,7 @@
                 {field: 'startWeek', width: 80, title: '起始周'},
                 {field: 'endWeek', width: 80, title: '结束周'},
                 {field: 'courseWeek', width: 80, title: '上课星期'},
-                {
-                    field: 'courseTime', width: 120, title: '上课时间',
-                    templet: "<div>{{layui.util.toDateString(d.courseTime,'HH:mm:ss')}}</div>"
-                },
+                {field: 'courseTime', width: 120, title: '上课时间'},
                 {field: 'courseAddress', width: 200, title: '上课地点'},
                 {fixed: 'right', title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
@@ -180,7 +178,7 @@
 
         upload.render({
             elem: '#upload'
-            , url: 'upload' //此处配置你自己的上传接口即可
+            , url: 'courseUpload' //此处配置你自己的上传接口即可
             , accept: 'file' //普通文件
             , done: function (res) {
                 layer.msg('上传成功');

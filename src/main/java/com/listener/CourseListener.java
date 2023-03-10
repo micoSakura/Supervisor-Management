@@ -7,7 +7,6 @@ import com.alibaba.fastjson.JSON;
 import com.pojo.Course;
 import com.service.CourseService;
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.List;
 
 @Slf4j
@@ -16,7 +15,9 @@ public class CourseListener implements ReadListener<Course> {
      * 每隔5条存储数据库，实际使用中可以100条，然后清理list ，方便内存回收
      */
     private static final int BATCH_COUNT = 100;
+
     private final CourseService courseService;
+
     /**
      * 缓存的数据
      */

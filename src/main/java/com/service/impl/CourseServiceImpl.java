@@ -8,12 +8,13 @@ import com.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class CourseServiceImpl implements CourseService {
 
-    @Autowired
+    @Resource
     private CourseMapper courseMapper;
 
     @Override
@@ -48,6 +49,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> queryCourseByCourseNum(Integer[] courseNum) {
         return courseMapper.queryCourseByCourseNum(courseNum);
+    }
+
+    @Override
+    public List<Course> queryCourse() {
+        return courseMapper.queryCourse();
     }
 
     @Override

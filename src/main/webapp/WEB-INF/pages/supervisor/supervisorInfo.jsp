@@ -28,42 +28,42 @@
                 <label class="layui-form-label required">督导姓名</label>
                 <div class="layui-input-block">
                     <input type="text" name="supName" lay-verify="required" lay-reqtext="督导姓名不能为空"
-                           placeholder="请输入督导姓名" value="${info.supName}" class="layui-input layui-disabled">
+                           placeholder="请输入督导姓名" value="${info.supName}" class="layui-input" disabled>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label required">登录名</label>
                 <div class="layui-input-block">
                     <input type="text" name="loginName" lay-verify="required" lay-reqtext="登录名不能为空"
-                           placeholder="请输入登录名" value="${info.loginName}" class="layui-input layui-disabled">
+                           placeholder="请输入登录名" value="${info.loginName}" class="layui-input" disabled>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label required">密码</label>
                 <div class="layui-input-block">
                     <input type="text" name="password" lay-verify="required" lay-reqtext="密码不能为空"
-                           placeholder="请输入密码" value="${info.password}" class="layui-input layui-disabled">
+                           placeholder="请输入密码" value="${info.password}" class="layui-input" disabled>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">性别</label>
                 <div class="layui-input-block layui-disabled">
                     <input type="text" name="password" placeholder="请输入密码"
-                           value="${info.sex}" class="layui-input layui-disabled">
+                           value="${info.sex}" class="layui-input" disabled>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label required">手机</label>
                 <div class="layui-input-block">
                     <input type="text" name="phone" lay-reqtext="手机不能为空" placeholder="请输入手机"
-                           value="${info.phone}" class="layui-input layui-disabled">
+                           value="${info.phone}" class="layui-input" disabled>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">职业</label>
                 <div class="layui-input-block">
                     <input type="text" name="title" placeholder="请输入职业" value="${info.title}"
-                           class="layui-input layui-disabled">
+                           class="layui-input" disabled>
                 </div>
             </div>
 

@@ -26,14 +26,14 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">课程名称</label>
         <div class="layui-input-block">
-            <input type="text" name="courseName" lay-verify="required" lay-reqtext="课程名称不能为空" disabled
+            <input type="text" name="courseName" lay-reqtext="课程名称不能为空" disabled
                    placeholder="请输入课程名称" value="${info.courseList[0].courseName}" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">教师姓名</label>
         <div class="layui-input-block">
-            <input type="text" name="teacherName" lay-verify="required" lay-reqtext="教师姓名不能为空" disabled
+            <input type="text" name="teacherName" lay-reqtext="教师姓名不能为空" disabled
                    placeholder="请输入教师姓名" value="${info.courseList[0].teacherName}" class="layui-input">
         </div>
     </div>
@@ -77,8 +77,12 @@
         <div class="layui-input-block">
             <select name="verifyState" disabled>
                 <option value="${info.verifyState}"><c:choose><c:when
-                        test="${info.verifyState=='0'}">通过</c:when><c:when
-                        test="${info.verifyState=='1'}">不通过</c:when><c:otherwise>待审核</c:otherwise></c:choose></option>
+                        test="${info.verifyState=='0'}">待审核</c:when><c:when
+                        test="${info.verifyState=='1'}">通过</c:when><c:when
+                        test="${info.verifyState=='2'}">不通过</c:when></c:choose></option>
+                <option value="0">待审核</option>
+                <option value="1">通过</option>
+                <option value="2">不通过</option>
             </select>
         </div>
     </div>
@@ -87,12 +91,15 @@
         <div class="layui-input-block">
             <select name="listenState">
                 <option value="${info.listenState}"><c:choose><c:when
-                        test="${info.listenState=='0'}">已听课</c:when><c:when
-                        test="${info.listenState=='1'}">未听课</c:when><c:otherwise>状态异常</c:otherwise></c:choose></option>
+                        test="${info.listenState=='0'}">待听课</c:when><c:when
+                        test="${info.listenState=='1'}">已听课</c:when><c:when
+                        test="${info.listenState=='2'}">未听课</c:when><c:when
+                        test="${info.listenState=='3'}">已评教</c:when><c:otherwise>状态异常</c:otherwise></c:choose>
                 </option>
-                <option value="0">已听课</option>
-                <option value="1">未听课</option>
-                <option value="2">状态异常</option>
+                <option value="0">待听课</option>
+                <option value="1">已听课</option>
+                <option value="2">未听课</option>
+                <option value="3">已评教</option>
             </select>
         </div>
     </div>

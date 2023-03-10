@@ -108,4 +108,74 @@ public class RecordServiceImpl implements RecordService {
         }
         return recordList;
     }
+
+    @Override
+    public List<Record> queryRecordBySupNum(Integer supNum) {
+        List<Record> recordList = recordMapper.queryRecordBySupNum(supNum);
+        for (Record record : recordList) {
+            List<Listen> listenList = listenMapper.queryListenNumByOne(record.getListenNum());
+            for (Listen listen : listenList) {
+                Course course = courseMapper.selectByPrimaryKey(listen.getCourseNum());
+                Supervisor supervisor = supervisorMapper.selectByPrimaryKey(listen.getSupNum());
+                record.setCourseName(course.getCourseName());
+                record.setTeacherName(course.getTeacherName());
+                record.setSupName(supervisor.getSupName());
+                record.setPhone(supervisor.getPhone());
+                record.setCourseTime(course.getCourseTime());
+                record.setCourseAddress(course.getCourseAddress());
+                if (Objects.equals(listen.getVerifyState(), "0")) {
+                    record.setVerifyState("待审核");
+                } else if (Objects.equals(listen.getVerifyState(), "1")) {
+                    record.setVerifyState("通过");
+                } else if (Objects.equals(listen.getVerifyState(), "2")) {
+                    record.setVerifyState("未通过");
+                }
+                if (Objects.equals(listen.getListenState(), "0")) {
+                    record.setListenState("待听课");
+                } else if (Objects.equals(listen.getListenState(), "1")) {
+                    record.setListenState("已听课");
+                } else if (Objects.equals(listen.getListenState(), "2")) {
+                    record.setListenState("未听课");
+                } else if (Objects.equals(listen.getListenState(), "3")) {
+                    record.setListenState("已评教");
+                }
+            }
+        }
+        return recordList;
+    }
+
+    @Override
+    public List<Record> queryRecord() {
+        List<Record> recordList = recordMapper.queryRecord();
+        for (Record record : recordList) {
+            List<Listen> listenList = listenMapper.queryListenNumByOne(record.getListenNum());
+            for (Listen listen : listenList) {
+                Course course = courseMapper.selectByPrimaryKey(listen.getCourseNum());
+                Supervisor supervisor = supervisorMapper.selectByPrimaryKey(listen.getSupNum());
+                record.setCourseName(course.getCourseName());
+                record.setTeacherName(course.getTeacherName());
+                record.setSupName(supervisor.getSupName());
+                record.setPhone(supervisor.getPhone());
+                record.setCourseTime(course.getCourseTime());
+                record.setCourseAddress(course.getCourseAddress());
+                if (Objects.equals(listen.getVerifyState(), "0")) {
+                    record.setVerifyState("待审核");
+                } else if (Objects.equals(listen.getVerifyState(), "1")) {
+                    record.setVerifyState("通过");
+                } else if (Objects.equals(listen.getVerifyState(), "2")) {
+                    record.setVerifyState("未通过");
+                }
+                if (Objects.equals(listen.getListenState(), "0")) {
+                    record.setListenState("待听课");
+                } else if (Objects.equals(listen.getListenState(), "1")) {
+                    record.setListenState("已听课");
+                } else if (Objects.equals(listen.getListenState(), "2")) {
+                    record.setListenState("未听课");
+                } else if (Objects.equals(listen.getListenState(), "3")) {
+                    record.setListenState("已评教");
+                }
+            }
+        }
+        return recordList;
+    }
 }

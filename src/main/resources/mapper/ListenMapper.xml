@@ -234,7 +234,33 @@
         </where>
     </select>
 
-    <select id="queryListenNumByOne" resultType="com.pojo.Listen">
+    <select id="queryListen" resultType="com.pojo.Listen" resultMap="BaseResultMap">
+        SELECT *
+        FROM listen
+        LEFT JOIN course ON listen.courseNum = course.courseNum
+        LEFT JOIN supervisor ON listen.supNum = supervisor.supNum
+    </select>
+
+    <select id="queryListenBySupNumWithListenView" resultType="com.pojo.Listen" resultMap="BaseResultMap">
+        SELECT * FROM listen
+        LEFT JOIN course ON listen.courseNum = course.courseNum
+        LEFT JOIN supervisor ON listen.supNum = supervisor.supNum
+        <where>
+            AND supervisor.supNum = #{supNum}
+        </where>
+    </select>
+
+    <select id="queryListenBySupNumWithListenEvaluation" resultType="com.pojo.Listen" resultMap="BaseResultMap">
+        SELECT * FROM listen
+        LEFT JOIN course ON listen.courseNum = course.courseNum
+        LEFT JOIN supervisor ON listen.supNum = supervisor.supNum
+        <where>
+            AND supervisor.supNum = #{supNum}
+            AND verifyState = 1
+        </where>
+    </select>
+
+    <select id="queryListenNumByOne" resultType="com.pojo.Listen" resultMap="BaseResultMap">
         SELECT *
         FROM listen
         LEFT JOIN course ON listen.courseNum = course.courseNum

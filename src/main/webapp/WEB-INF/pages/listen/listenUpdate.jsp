@@ -76,11 +76,12 @@
         <div class="layui-input-block">
             <select name="verifyState">
                 <option value="${info.verifyState}"><c:choose><c:when
-                        test="${info.verifyState=='0'}">通过</c:when><c:when
-                        test="${info.verifyState=='1'}">不通过</c:when><c:otherwise>待审核</c:otherwise></c:choose></option>
-                <option value="0">通过</option>
-                <option value="1">不通过</option>
-                <option value="2">待审核</option>
+                        test="${info.verifyState=='0'}">待审核</c:when><c:when
+                        test="${info.verifyState=='1'}">通过</c:when><c:when
+                        test="${info.verifyState=='2'}">不通过</c:when></c:choose></option>
+                <option value="0">待审核</option>
+                <option value="1">通过</option>
+                <option value="2">不通过</option>
             </select>
         </div>
     </div>
@@ -89,12 +90,15 @@
         <div class="layui-input-block">
             <select name="listenState">
                 <option value="${info.listenState}"><c:choose><c:when
-                        test="${info.listenState=='0'}">已听课</c:when><c:when
-                        test="${info.listenState=='1'}">未听课</c:when><c:otherwise>状态异常</c:otherwise></c:choose></option>
+                        test="${info.listenState=='0'}">待听课</c:when><c:when
+                        test="${info.listenState=='1'}">已听课</c:when><c:when
+                        test="${info.listenState=='2'}">未听课</c:when><c:when
+                        test="${info.listenState=='3'}">已评教</c:when><c:otherwise>状态异常</c:otherwise></c:choose>
                 </option>
-                <option value="0">已听课</option>
-                <option value="1">未听课</option>
-                <option value="2">状态异常</option>
+                <option value="0">待听课</option>
+                <option value="1">已听课</option>
+                <option value="2">未听课</option>
+                <option value="3">已评教</option>
             </select>
         </div>
     </div>

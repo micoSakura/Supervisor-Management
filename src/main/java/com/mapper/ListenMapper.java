@@ -93,5 +93,29 @@ public interface ListenMapper {
      */
     List<Listen> queryListenByListenNums(Integer[] listenNum);
 
+    /**
+     * 报名审核导出功能
+     *
+     */
+    List<Listen> queryListen();
+
+    /**
+     * 已选课程导出功能
+     * @param supNum
+     */
+    List<Listen> queryListenBySupNumWithListenView(@Param("supNum") Integer supNum);
+
+    /**
+     * 已听课程导出功能
+     * @param supNum
+     */
+    List<Listen> queryListenBySupNumWithListenEvaluation(@Param("supNum") Integer supNum);
+
+    /**
+     * 查询听课表数据
+     *
+     * @param listenNum
+     * @return
+     */
     List<Listen> queryListenNumByOne(Integer listenNum);
 }

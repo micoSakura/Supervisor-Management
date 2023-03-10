@@ -86,6 +86,9 @@
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add">选课安排</button>
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete">删除</button>
                 <button class="layui-btn layui-btn-sm layui-btn-warm data-delete-btn" lay-event="edit">更新</button>
+                <button class="layui-btn layui-btn-sm layui-btn-primary layui-border-black" lay-event="export">
+                    报名审核导出
+                </button>
             </div>
         </script>
 
@@ -145,7 +148,7 @@
                 },
                 {
                     field: 'courseTime', width: 120, title: '上课时间',
-                    templet: "<div>{{layui.util.toDateString(d.courseList[0].courseTime,'HH:mm:ss')}}</div>"
+                    templet: "<div>{{d.courseList[0].courseTime}}</div>"
                 },
                 {
                     field: 'courseAddress', width: 200, title: '上课地点',
@@ -215,6 +218,10 @@
         table.on('toolbar(currentTableFilter)', function (obj) {
             let checkStatus = table.checkStatus('currentTableId')
                 , data = checkStatus.data;
+            let listenNum = [];
+            for (let i = 0; i < data.length; i++) {
+                listenNum += data[i].listenNum + ",";
+            }
             if (obj.event === 'add') {  // 监听添加操作
                 layer.open({
                     title: '选课安排',
@@ -226,10 +233,6 @@
                     content: '${pageContext.request.contextPath}/listenAdd',
                 });
             } else if (obj.event === 'delete') {  // 监听删除操作
-                let listenNum = [];
-                for (let i = 0; i < data.length; i++) {
-                    listenNum += data[i].listenNum + ",";
-                }
                 if (checkStatus.data.length === 0) {
                     layer.msg('请选择需要删除的数据');
                 } else {
@@ -251,16 +254,15 @@
                         maxmin: true,
                         shadeClose: true,
                         area: ['80%', '80%'],
-                        content: '${pageContext.request.contextPath}/queryListenByListenNum?listenNum=' + data[0].listenNum,
+                        content: '${pageContext.request.contextPath}/queryListenByListenNum?listenNum='
+                            + data[0].listenNum,
                     });
                     return false;
                 } else {
                     layer.msg("请勿多选");
                 }
-            } else if (obj.event === 'getCheckData') {
-                let checkStatus = table.checkStatus('currentTableId')
-                    , data = checkStatus.data;
-                layer.alert(layui.util.escape(JSON.stringify(data)));
+            } else if (obj.event === 'export') {
+                location.href = "downloadByListenNumWithListenList?listenNum=" + listenNum;
             }
         });
 

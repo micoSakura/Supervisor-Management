@@ -66,8 +66,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">上课时间</label>
         <div class="layui-input-block">
-            <input type="text" name="courseTime" id="courseTime" placeholder="请选择时间"
-                   value="${info.courseTime}" class="layui-input">
+            <input type="time" name="courseTime" id="courseTime" placeholder="请选择时间"
+                   value="<fmt:formatDate value='${info.courseTime}' pattern='HH:mm:ss'/>" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">

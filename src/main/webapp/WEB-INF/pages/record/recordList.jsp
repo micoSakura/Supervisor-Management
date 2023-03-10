@@ -129,6 +129,8 @@
         form.on('submit(data-search-btn)', function (data) {
             let courseName = $('#courseName').val();
             let teacherName = $('#teacherName').val();
+            let supName = $('#supName').val();
+            let phone = $('#phone').val();
 
             //执行搜索重载
             table.reload('currentTableId', {
@@ -137,7 +139,9 @@
                 }
                 , where: {
                     courseName: courseName,
-                    teacherName: teacherName
+                    teacherName: teacherName,
+                    supName: supName,
+                    phone: phone
                 }
             }, 'data');
             return false;

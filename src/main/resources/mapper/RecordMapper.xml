@@ -202,4 +202,24 @@
         </where>
     </select>
 
+    <select id="queryRecordBySupNum" resultType="com.pojo.Record">
+        SELECT *
+        FROM record
+        LEFT JOIN listen ON record.listenNum = listen.listenNum
+        LEFT JOIN course ON listen.courseNum = course.courseNum
+        LEFT JOIN supervisor ON listen.supNum = supervisor.supNum
+        <where>
+            AND supervisor.supNum = #{supNum}
+        </where>
+    </select>
+
+    <select id="queryRecord" resultType="com.pojo.Record">
+        SELECT *
+        FROM record
+        LEFT JOIN listen ON record.listenNum = listen.listenNum
+        LEFT JOIN course ON listen.courseNum = course.courseNum
+        LEFT JOIN supervisor ON listen.supNum = supervisor.supNum
+    </select>
+
+
 </mapper>
