@@ -14,16 +14,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class SupervisorController {
 
-    @Autowired
+    @Resource
     private SupervisorService supervisorService;
 
     @GetMapping("/supervisorList")
@@ -62,8 +64,23 @@ public class SupervisorController {
 
     @RequestMapping("/updateSupervisor")
     @ResponseBody
-    public DataInfo updateSupervisor(@RequestBody Supervisor supervisor) {
-        supervisorService.updateSupervisor(supervisor);
+    public DataInfo updateSupervisor(@RequestBody Supervisor supervisor,
+                                     HttpServletRequest request) {
+        DataInfo dataInfo = new DataInfo();
+        dataInfo.setMsg("/login");
+        HttpSession session = request.getSession();
+        Supervisor supervisors = supervisorService.querySupervisorBySupNum(supervisor.getSupNum());
+        if (!Objects.equals(supervisors.getLoginName(), supervisor.getLoginName())){
+            supervisorService.updateSupervisor(supervisor);
+            session.invalidate();
+            return dataInfo;
+        } else if (!Objects.equals(supervisors.getPassword(), supervisor.getPassword())){
+            supervisorService.updateSupervisor(supervisor);
+            session.invalidate();
+            return dataInfo;
+        } else {
+            supervisorService.updateSupervisor(supervisor);
+        }
         return DataInfo.ok();
     }
 
@@ -77,9 +94,9 @@ public class SupervisorController {
 
     @PostMapping("supervisorUpload")
     @ResponseBody
-    public String supervisorUpload(MultipartFile file) throws IOException {
-        EasyExcel.read(file.getInputStream(), Course.class, new SupervisorListener(supervisorService)).sheet().doRead();
-        return "success";
+    public DataInfo supervisorUpload(MultipartFile file) throws IOException {
+        EasyExcel.read(file.getInputStream(), Supervisor.class, new SupervisorListener(supervisorService)).sheet().doRead();
+        return DataInfo.ok();
     }
 
     /**

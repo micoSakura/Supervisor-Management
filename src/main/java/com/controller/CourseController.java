@@ -111,9 +111,9 @@ public class CourseController {
 
     @PostMapping("courseUpload")
     @ResponseBody
-    public String courseUpload(MultipartFile file) throws IOException {
+    public DataInfo courseUpload(MultipartFile file) throws IOException {
         EasyExcel.read(file.getInputStream(), Course.class, new CourseListener(courseService)).sheet().doRead();
-        return "success";
+        return DataInfo.ok();
     }
 
     @GetMapping("downloadByCourse")

@@ -12,7 +12,7 @@ public class DataInfo implements Serializable {
     private Integer code;
     private String msg;
     private Object data; //json数据
-    private Long count; // 分页信息：总条数
+    private Long count; // 分页信息: 总条数
 
     public DataInfo() {
     }

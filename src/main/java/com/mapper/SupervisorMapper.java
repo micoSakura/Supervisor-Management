@@ -39,7 +39,7 @@ public interface SupervisorMapper {
     /**
      * 保存课程导入集合到数据库中的方法
      *
-     * @param courseList
+     * @param supervisorList
      */
     void save(List<Supervisor> supervisorList);
 }

@@ -180,13 +180,14 @@
         });
         upload.render({
             elem: '#upload'
-            , url: 'upload' //此处配置你自己的上传接口即可
+            , url: 'supervisorUpload' //此处配置你自己的上传接口即可
             , accept: 'file' //普通文件
             , done: function (res) {
                 layer.msg('上传成功');
+                table.reload("currentTableId", {});
                 console.log(res);
-            },
-            fail: function (res) {
+            }
+            , fail: function (res) {
                 layer.msg('上传失败');
                 console.log(res);
             }

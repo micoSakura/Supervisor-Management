@@ -11,7 +11,6 @@ import com.utils.DataInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -57,7 +55,7 @@ public class RecordController {
 
     @RequestMapping("/addRecord")
     @ResponseBody
-    public DataInfo addRecord(Record record) {
+    public DataInfo addRecord(@RequestBody Record record) {
         recordService.addRecord(record);
         return DataInfo.ok();
     }
@@ -65,7 +63,9 @@ public class RecordController {
     @GetMapping("/queryRecordByRecordNum")
     public String queryRecordByRecordNum(Integer recordNum, Model model) {
         Record record = recordService.queryRecordByRecordNum(recordNum);
-        model.addAttribute("info", record);
+        Listen listen = listenService.queryListenByListenNum(record.getListenNum());
+        model.addAttribute("infoRecord", record);
+        model.addAttribute("infoListen", listen);
         return "record/recordUpdate";
     }
 

@@ -6,6 +6,7 @@ import com.alibaba.excel.annotation.format.DateTimeFormat;
 import com.alibaba.excel.annotation.write.style.*;
 import com.alibaba.excel.enums.poi.HorizontalAlignmentEnum;
 import com.alibaba.excel.enums.poi.VerticalAlignmentEnum;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -47,6 +48,7 @@ public class Record implements Serializable {
     private String phone;
     @ExcelProperty("上课时间")
     @DateTimeFormat("HH:mm:ss")
+    @JSONField(format="HH:mm:ss")
     private Date courseTime;
     @ExcelProperty("上课地点")
     private String courseAddress;

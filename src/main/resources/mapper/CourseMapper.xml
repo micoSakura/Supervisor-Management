@@ -159,16 +159,17 @@
     </select>
 
     <!-- 批量插入数据 -->
-    <insert id="save">
+    <insert id="save" parameterType="com.pojo.Course">
         insert into
-        course (courseNum, courseName, teacherName,
+        course (courseName, teacherName,
         startWeek, endWeek, courseWeek,
         courseTime, courseAddress)
         values
         <foreach collection="list" item="course" separator=",">
-            (#{courseNum,jdbcType=INTEGER}, #{courseName,jdbcType=VARCHAR}, #{teacherName,jdbcType=VARCHAR},
-            #{startWeek,jdbcType=INTEGER}, #{endWeek,jdbcType=INTEGER}, #{courseWeek,jdbcType=VARCHAR},
-            #{courseTime,jdbcType=TIMESTAMP}, #{courseAddress,jdbcType=VARCHAR})
+            (#{course.courseName,jdbcType=VARCHAR}, #{course.teacherName,jdbcType=VARCHAR},
+            #{course.startWeek,jdbcType=INTEGER}, #{course.endWeek,jdbcType=INTEGER},
+            #{course.courseWeek,jdbcType=VARCHAR}, #{course.courseTime,jdbcType=TIMESTAMP},
+            #{course.courseAddress,jdbcType=VARCHAR})
         </foreach>
     </insert>
     <!-- EasyExcel -->

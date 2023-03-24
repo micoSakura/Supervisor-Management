@@ -99,7 +99,15 @@
                             let iframeIndex = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(iframeIndex);
                         })
-                    } else {
+                    } else if (result.msg === '/login'){
+                        layer.msg('修改成功', {
+                            icon: 6,
+                            time: 500
+                        }, function () {
+                            parent.parent.window.location.replace('http://localhost:8080/login');
+                        })
+                    }
+                    else {
                         layer.msg("修改失败");
                     }
                 }

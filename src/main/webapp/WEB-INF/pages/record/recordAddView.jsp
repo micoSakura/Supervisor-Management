@@ -37,8 +37,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">上课时间</label>
         <div class="layui-input-block">
-            <input type="text" name="courseTime" id="courseTime" placeholder="请选择时间"
-                   value="${info.courseList[0].courseTime}" class="layui-input" disabled>
+            <input type="text" name="courseTime" id="courseTime" placeholder="请选择时间" class="layui-input" disabled
+                   value="<fmt:formatDate value='${info.courseList[0].courseTime}' pattern='HH:mm:ss'/>">
         </div>
     </div>
     <div class="layui-form-item">
@@ -49,39 +49,41 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">选课人数</label>
+        <label class="layui-form-label required">选课人数</label>
         <div class="layui-input-block">
             <input type="number" name="selection" lay-verify="required" lay-reqtext="选课人数不能为空"
                    placeholder="选课人数" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">出勤人数</label>
+        <label class="layui-form-label required">出勤人数</label>
         <div class="layui-input-block">
             <input type="number" name="attendance" lay-verify="required" lay-reqtext="出勤人数不能为空"
                    placeholder="出勤人数" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">课堂评分</label>
+        <label class="layui-form-label required">课堂评分</label>
         <div class="layui-input-block">
             <input type="number" name="evaluation" lay-verify="required" lay-reqtext="课堂评分不能为空"
                    placeholder="课堂评分" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">授课内容</label>
+        <label class="layui-form-label required">授课内容</label>
         <div class="layui-input-block">
             <label>
-                <textarea placeholder="请输入内容" class="layui-textarea" name="courseContent"></textarea>
+                <textarea placeholder="请输入内容" lay-verify="required" class="layui-textarea" name="courseContent">
+                </textarea>
             </label>
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">意见</label>
+        <label class="layui-form-label required">意见</label>
         <div class="layui-input-block">
             <label>
-                <textarea placeholder="请输入意见" class="layui-textarea" name="suggestion"></textarea>
+                <textarea placeholder="请输入意见" lay-verify="required" class="layui-textarea" name="suggestion">
+                </textarea>
             </label>
         </div>
     </div>
@@ -112,7 +114,8 @@
             $.ajax({
                 url: "addRecord",
                 type: "POST",
-                data: info,
+                contentType: 'application/json',
+                data: JSON.stringify(info),
                 success: function (result) {
                     if (result.code === 0) {//如果成功
                         layer.msg('评教完成', {

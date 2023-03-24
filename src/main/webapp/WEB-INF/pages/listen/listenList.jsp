@@ -131,7 +131,7 @@
                 {field: 'courseNum', width: 80, title: '课程编号', hide: true},
                 {field: 'supNum', width: 80, title: '督导编号', hide: true},
                 {
-                    field: 'courseName', width: 120, title: '课程名称',
+                    field: 'courseName', width: 160, title: '课程名称',
                     templet: '<div>{{d.courseList[0].courseName}}</div>'
                 },
                 {
@@ -175,6 +175,8 @@
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">未听课</span>'
                         } else if (res.listenState === "3" && res.verifyState === "1") {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger">已评教</span>'
+                        } else if (res.listenState === "0" && res.verifyState === "2") {
+                            return '<span></span>'
                         } else {
                             return '<span class="layui-btn layui-btn-xs layui-btn-radius layui-btn-warm">状态异常</span>'
                         }

@@ -98,7 +98,7 @@
                 {field: 'recordNum', width: 80, title: '课程编号', hide: true},
                 {field: 'listenNum', width: 80, title: '课程编号', hide: true},
                 {
-                    field: 'courseName', width: 120, title: '课程名称',
+                    field: 'courseName', width: 160, title: '课程名称',
                     templet: '<div>{{d.listenList[0].courseList[0].courseName}}</div>'
                 },
                 {

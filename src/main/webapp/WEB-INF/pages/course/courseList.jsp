@@ -86,7 +86,7 @@
             cols: [[
                 {type: "checkbox", width: 50},
                 {field: 'courseNum', width: 80, title: '课程编号', hide: true},
-                {field: 'courseName', width: 120, title: '课程名称'},
+                {field: 'courseName', width: 160, title: '课程名称'},
                 {field: 'teacherName', width: 120, title: '教师姓名'},
                 {field: 'startWeek', width: 80, title: '起始周'},
                 {field: 'endWeek', width: 80, title: '结束周'},
@@ -185,6 +185,7 @@
             , accept: 'file' //普通文件
             , done: function (res) {
                 layer.msg('上传成功');
+                table.reload("currentTableId", {});
                 console.log(res);
             },
             fail: function (res) {

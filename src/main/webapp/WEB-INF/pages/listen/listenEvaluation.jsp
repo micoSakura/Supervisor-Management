@@ -97,7 +97,7 @@
                 {field: 'supNum', width: 80, title: '督导编号', hide: true},
                 {field: 'courseNum', width: 80, title: '课程编号', hide: true},
                 {
-                    field: 'courseName', width: 120, title: '课程名称',
+                    field: 'courseName', width: 160, title: '课程名称',
                     templet: '<div>{{d.courseList[0].courseName}}</div>'
                 },
                 {

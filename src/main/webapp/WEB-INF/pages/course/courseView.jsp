@@ -81,7 +81,7 @@
             cols: [[
                 {type: "checkbox", width: 50},
                 {field: 'courseNum', width: 80, title: '课程编号', hide: true},
-                {field: 'courseName', width: 120, title: '课程名称'},
+                {field: 'courseName', width: 160, title: '课程名称'},
                 {field: 'teacherName', width: 120, title: '教师姓名'},
                 {field: 'startWeek', width: 120, title: '起始周'},
                 {field: 'endWeek', width: 80, title: '结束周'},

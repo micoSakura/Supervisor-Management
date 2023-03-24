@@ -31,7 +31,9 @@
         }
 
         body {
-            background: #1E9FFF;
+            background: url(../../images/banner_sub.jpg) 0 0 / cover no-repeat;
+            position: static;
+            font-size: 12px;
         }
 
         body:after {
@@ -130,7 +132,7 @@
         <div class="layui-form login-form">
             <form class="layui-form" lay-filter="add_form" action="${pageContext.request.contextPath}/loginIn">
                 <div class="layui-form-item logo-title">
-                    <h1>LayuiMini后台登录</h1>
+                    <h1>督导听课信息管理系统</h1>
                     <div style="color: red;text-align: center;">${msg}</div>
                 </div>
                 <div class="layui-form-item">
@@ -203,14 +205,6 @@
                 "type": $.cookie("user_type")
             });
         }
-
-        // 粒子线条背景
-        $(document).ready(function () {
-            $('.layui-container').particleground({
-                dotColor: '#7ec7fd',
-                lineColor: '#7ec7fd'
-            });
-        });
 
         // 进行登录操作
         form.on('submit(login)', function (data) {

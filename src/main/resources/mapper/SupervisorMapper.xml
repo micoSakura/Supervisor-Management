@@ -139,15 +139,15 @@
 
     <!-- EasyExcel -->
     <!-- 批量插入数据 -->
-    <insert id="save">
+    <insert id="save" parameterType="com.pojo.Supervisor">
         insert into
-        supervisor (supNum, supName, loginName,
+        supervisor (supName, loginName,
         password, sex, title, phone)
         values
         <foreach collection="list" item="supervisor" separator=",">
-            (#{supNum,jdbcType=INTEGER}, #{supName,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR},
-            #{password,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
-            #{phone,jdbcType=VARCHAR})
+            (#{supervisor.supName,jdbcType=VARCHAR}, #{supervisor.loginName,jdbcType=VARCHAR},
+            #{supervisor.password,jdbcType=VARCHAR}, #{supervisor.sex,jdbcType=VARCHAR},
+            #{supervisor.title,jdbcType=VARCHAR}, #{supervisor.phone,jdbcType=VARCHAR})
         </foreach>
     </insert>
     <!-- EasyExcel -->
