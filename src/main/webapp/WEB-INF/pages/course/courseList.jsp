@@ -51,6 +51,9 @@
                 </button>
                 <button type="button" class="layui-btn layui-btn-sm layui-btn-primary layui-border-black" id="upload">
                     <i class="layui-icon"></i>课程信息导入</button>
+                <button class="layui-btn layui-btn-sm layui-btn-primary layui-border-black" lay-event="export">
+                    课程导出
+                </button>
             </div>
         </script>
 
@@ -119,6 +122,13 @@
          * toolbar监听事件
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
+            let checkStatus = table.checkStatus('currentTableId')
+                , data = checkStatus.data;
+            let courseNum = [];
+            for (let i = 0; i < data.length; i++) {
+                courseNum += data[i].courseNum + ",";
+            }
+            console.log(courseNum);
             if (obj.event === 'add') {  // 监听添加操作
                 layer.open({
                     title: '添加课程',
@@ -130,21 +140,14 @@
                     content: '${pageContext.request.contextPath}/courseAdd',
                 });
             } else if (obj.event === 'delete') {  // 监听删除操作
-                let checkStatus = table.checkStatus('currentTableId')
-                    , data = checkStatus.data;
-                let courseNum = [];
-                for (let i = 0; i < data.length; i++) {
-                    courseNum += data[i].courseNum + ",";
-                }
-                console.log(courseNum);
                 $.post("deleteCourseByCourseNum", {courseNum: courseNum},
                     function (result) {
                         if (result.code === 0) {
                             table.reload("currentTableId", {});
                         }
                     });
-            } else if (obj.event === 'export') {
-
+            } else if (obj.event === 'export') {  // 监听删除操作
+                location.href = "downloadByCourse?courseNum=" + courseNum;
             }
         });
 
